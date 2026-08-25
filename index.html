@@ -393,9 +393,7 @@
 
 <script>
 // ── CONFIG ────────────────────────────────────────────────────────────────────
-const SHEET_ID = '1LU-KdXi8IpQVN4mzR74FSovBPkxbC4_7YycRyYplAWM';
-const SHEET_NAME = 'RCA Data';
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+const API_URL = 'https://script.google.com/a/macros/flipkart.com/s/AKfycbxiW46ZJAHYzEvvRDeg5tkVScBebm_AS4aA1HlE9YxMu-5Gg6ZQ3xT41HNC9zOU3PKEHw/exec';
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let rawData = [];
@@ -424,22 +422,20 @@ const DOH_COLORS = {
 // ── LOAD DATA ─────────────────────────────────────────────────────────────────
 function loadData() {
   document.getElementById('lastUpdated').textContent = 'Loading...';
-  Papa.parse(CSV_URL, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    complete: function(results) {
-      rawData = results.data;
+  fetch(API_URL)
+    .then(r => r.json())
+    .then(data => {
+      rawData = data;
       document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-IN');
       populateFilters();
       applyFilters();
       checkAlerts();
-    },
-    error: function(err) {
+    })
+    .catch(err => {
       document.getElementById('lastUpdated').textContent = 'Error loading data';
-      showAlert('⚠️ Could not fetch data. Make sure the Google Sheet is shared publicly (Anyone with link → Viewer).');
-    }
-  });
+      showAlert('⚠️ Could not fetch data. Make sure you are signed in with your @flipkart.com Google account and try refreshing.');
+      console.error(err);
+    });
 }
 
 // ── ALERTS ────────────────────────────────────────────────────────────────────
