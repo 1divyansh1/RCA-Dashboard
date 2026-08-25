@@ -109,6 +109,27 @@
     font-size: 13px; color: #e65100; font-weight: 500; display: none;
   }
   .data-date { background: #e3f2fd; color: #1565c0; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 12px; }
+  /* FC Summary Table */
+  .fc-summary-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .fc-summary-table thead tr { background: #1a237e; color: #fff; }
+  .fc-summary-table thead th { padding: 10px 14px; text-align: left; white-space: nowrap; cursor: pointer; font-weight: 600; user-select: none; }
+  .fc-summary-table thead th:hover { background: #283593; }
+  .fc-summary-table thead th.fcs-asc::after  { content: ' ▲'; font-size: 10px; }
+  .fc-summary-table thead th.fcs-desc::after { content: ' ▼'; font-size: 10px; }
+  .fc-summary-table tbody tr { border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s; }
+  .fc-summary-table tbody tr:hover { background: #e8f0fe; }
+  .fc-summary-table tbody tr.fc-active { background: #e3f2fd; font-weight: 700; }
+  .fc-summary-table td { padding: 9px 14px; }
+  .fc-summary-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .fc-summary-table tfoot tr { background: #f5f5f5; font-weight: 700; border-top: 2px solid #bbb; }
+  .fc-summary-table tfoot td { padding: 9px 14px; }
+  .mini-bar-wrap { display: flex; align-items: center; gap: 4px; min-width: 120px; }
+  .mini-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; flex: 1; background: #eee; }
+  .mini-seg { height: 100%; transition: width 0.3s; }
+  .fc-sort-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .fc-sort-row label { font-size: 11px; font-weight: 700; color: #777; text-transform: uppercase; }
+  .fc-sort-row select { border: 1px solid #ddd; border-radius: 4px; padding: 4px 8px; font-size: 12px; background: #fafafa; }
+  .fc-clear-link { font-size: 12px; color: var(--fk-blue); cursor: pointer; text-decoration: underline; }
   @media (max-width: 900px) {
     .kpi-row { grid-template-columns: repeat(3, 1fr); }
     .chart-row-3, .chart-row-2 { grid-template-columns: 1fr; }
@@ -122,9 +143,17 @@
     <div class="fk-logo">flipkart</div>
     <h1>🛒 Grocery RCA Dashboard</h1>
   </div>
-  <div class="header-right">
-    <span>Data as of</span>
-    <div class="last-updated" id="lastUpdated">--</div>
+  <div class="header-right" style="display:flex;align-items:center;gap:16px">
+    <a href="https://docs.google.com/spreadsheets/d/1LU-KdXi8IpQVN4mzR74FSovBPkxbC4_7YycRyYplAWM/edit?gid=1983367117#gid=1983367117"
+       target="_blank"
+       style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#2874f0;font-size:13px;font-weight:700;padding:7px 14px;border-radius:6px;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,0.2);white-space:nowrap;transition:opacity 0.15s"
+       onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+      📄 Raw File
+    </a>
+    <div style="text-align:right">
+      <span style="color:rgba(255,255,255,0.8);font-size:12px;display:block">Data as of</span>
+      <div class="last-updated" id="lastUpdated">--</div>
+    </div>
   </div>
 </div>
 
@@ -150,6 +179,51 @@
     <div class="kpi-card nopo"><div class="kpi-label">No PO</div><div class="kpi-value" id="kpi-nopo">-</div><div class="kpi-sub"><span class="kpi-pct" id="kpi-nopo-pct" style="color:var(--nopo)">-</span> of total</div></div>
     <div class="kpi-card scheduled"><div class="kpi-label">Scheduled</div><div class="kpi-value" id="kpi-scheduled">-</div><div class="kpi-sub"><span class="kpi-pct" id="kpi-scheduled-pct" style="color:var(--sch5)">-</span> of total</div></div>
     <div class="kpi-card pending"><div class="kpi-label">Pending Schedule</div><div class="kpi-value" id="kpi-pending">-</div><div class="kpi-sub"><span class="kpi-pct" id="kpi-pending-pct" style="color:var(--pending)">-</span> of total</div></div>
+  </div>
+
+  <div class="section-title">🏭 FC-Level Summary</div>
+  <div class="table-card" style="margin-bottom:20px">
+    <div class="table-header">
+      <div class="table-title">FC Breakdown <span style="font-size:11px;color:#999;font-weight:400;margin-left:8px">Click any row to filter all views by that FC</span></div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="fc-sort-row" style="margin:0">
+          <label>Sort by</label>
+          <select id="fc-sort-col" onchange="renderFCSummary()">
+            <option value="FC">FC Name</option>
+            <option value="total">Total SKUs</option>
+            <option value="Instock">Instock</option>
+            <option value="No PO">No PO</option>
+            <option value="Scheduled <5 days">Sch &lt;5 days</option>
+            <option value="Scheduled >5 days">Sch &gt;5 days</option>
+            <option value="Pending to schedule">Pending</option>
+            <option value="pct_instock">% Instock</option>
+            <option value="pct_atrisk">% At-Risk</option>
+          </select>
+          <select id="fc-sort-dir" onchange="renderFCSummary()">
+            <option value="desc">High → Low</option>
+            <option value="asc">Low → High</option>
+          </select>
+        </div>
+        <span class="fc-clear-link" id="fc-clear-link" style="display:none" onclick="clearFCFilter()">✕ Clear FC filter</span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="fc-summary-table">
+        <thead><tr>
+          <th>FC</th>
+          <th class="num">Total SKUs</th>
+          <th class="num" style="color:#a5d6a7">Instock</th>
+          <th class="num" style="color:#ef9a9a">No PO</th>
+          <th class="num" style="color:#ffcc80">Sch &lt;5 Days</th>
+          <th class="num" style="color:#fff176">Sch &gt;5 Days</th>
+          <th class="num" style="color:#cfd8dc">Pending</th>
+          <th>% Instock</th>
+          <th>Status Mix</th>
+        </tr></thead>
+        <tbody id="fc-summary-body"></tbody>
+        <tfoot id="fc-summary-foot"></tfoot>
+      </table>
+    </div>
   </div>
 
   <div class="section-title">📈 Instock & Risk Overview</div>
@@ -275,6 +349,7 @@ function applyFilters() {
   );
   currentPage = 1;
   updateKPIs();
+  renderFCSummary();
   updateCharts();
   renderTable();
 }
@@ -307,6 +382,75 @@ function updateKPIs() {
   document.getElementById('kpi-scheduled-pct').textContent = pct(scheduled);
   document.getElementById('kpi-pending-pct').textContent   = pct(pending);
 }
+
+// ── FC Summary ────────────────────────────────────────────────────────────────
+let activeFCFilter = '';
+function renderFCSummary() {
+  const sortCol = document.getElementById('fc-sort-col').value;
+  const sortDir = document.getElementById('fc-sort-dir').value === 'asc' ? 1 : -1;
+  const fcs = [...new Set(rawData.map(r => r.FC).filter(Boolean))].sort();
+  const STATUS = ['Instock','No PO','Scheduled <5 days','Scheduled >5 days','Pending to schedule'];
+  const rows = fcs.map(fc => {
+    const d = filteredData.filter(r => r.FC === fc);
+    const total = d.length;
+    const counts = {};
+    STATUS.forEach(s => counts[s] = d.filter(r => r.Instock_View === s).length);
+    return { FC: fc, total, ...counts,
+      pct_instock: total ? counts['Instock']/total : 0,
+      pct_atrisk:  total ? (counts['No PO']+(d.filter(r=>r.doh_bucket==='oos').length))/total : 0
+    };
+  }).filter(r => r.total > 0);
+  rows.sort((a,b) => {
+    const av = a[sortCol] !== undefined ? a[sortCol] : '';
+    const bv = b[sortCol] !== undefined ? b[sortCol] : '';
+    return (av < bv ? -1 : av > bv ? 1 : 0) * sortDir;
+  });
+  const totRow = { FC: 'TOTAL', total: rows.reduce((s,r)=>s+r.total,0) };
+  STATUS.forEach(s => totRow[s] = rows.reduce((sum,r)=>sum+(r[s]||0),0));
+  totRow.pct_instock = totRow.total ? totRow['Instock']/totRow.total : 0;
+  const SC = { 'Instock':'#00897b','No PO':'#e53935','Scheduled <5 days':'#fb8c00','Scheduled >5 days':'#f9a825','Pending to schedule':'#90a4ae' };
+  const miniBar = row => {
+    const t = row.total || 1;
+    return `<div class="mini-bar">${STATUS.map(s=>`<div class="mini-seg" style="width:${(row[s]||0)/t*100}%;background:${SC[s]}"></div>`).join('')}</div>`;
+  };
+  const pctInstock = row => {
+    const p = (row.pct_instock*100).toFixed(1);
+    const color = row.pct_instock >= 0.8 ? '#00897b' : row.pct_instock >= 0.5 ? '#fb8c00' : '#e53935';
+    return `<span style="font-weight:700;color:${color}">${p}%</span>`;
+  };
+  const tbody = document.getElementById('fc-summary-body');
+  tbody.innerHTML = rows.map(r => `<tr onclick="toggleFCFilter('${r.FC}')" class="${activeFCFilter===r.FC?'fc-active':''}">
+    <td><b>${r.FC}</b></td>
+    <td class="num">${r.total.toLocaleString()}</td>
+    <td class="num" style="color:var(--instock)">${(r['Instock']||0).toLocaleString()}</td>
+    <td class="num" style="color:var(--nopo)">${(r['No PO']||0).toLocaleString()}</td>
+    <td class="num" style="color:var(--sch5)">${(r['Scheduled <5 days']||0).toLocaleString()}</td>
+    <td class="num" style="color:var(--sch5plus)">${(r['Scheduled >5 days']||0).toLocaleString()}</td>
+    <td class="num" style="color:var(--pending)">${(r['Pending to schedule']||0).toLocaleString()}</td>
+    <td>${pctInstock(r)}</td>
+    <td>${miniBar(r)}</td>
+  </tr>`).join('');
+  const tfoot = document.getElementById('fc-summary-foot');
+  tfoot.innerHTML = `<tr>
+    <td><b>TOTAL</b></td>
+    <td class="num">${totRow.total.toLocaleString()}</td>
+    <td class="num">${totRow['Instock'].toLocaleString()}</td>
+    <td class="num">${totRow['No PO'].toLocaleString()}</td>
+    <td class="num">${totRow['Scheduled <5 days'].toLocaleString()}</td>
+    <td class="num">${totRow['Scheduled >5 days'].toLocaleString()}</td>
+    <td class="num">${totRow['Pending to schedule'].toLocaleString()}</td>
+    <td>${pctInstock(totRow)}</td>
+    <td>${miniBar(totRow)}</td>
+  </tr>`;
+  document.getElementById('fc-clear-link').style.display = activeFCFilter ? 'inline' : 'none';
+}
+
+function toggleFCFilter(fc) {
+  if (activeFCFilter === fc) { activeFCFilter = ''; document.getElementById('f-fc').value = ''; }
+  else { activeFCFilter = fc; document.getElementById('f-fc').value = fc; }
+  applyFilters();
+}
+function clearFCFilter() { activeFCFilter = ''; document.getElementById('f-fc').value = ''; applyFilters(); }
 
 function makeDonut(id, labels, data, colors) {
   if (charts[id]) charts[id].destroy();
