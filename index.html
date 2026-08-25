@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grocery RCA Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --fk-blue: #2874f0;
+    --fk-dark: #1a237e;
+    --fk-orange: #fb641b;
+    --fk-bg: #f1f3f6;
+    --fk-card: #ffffff;
+    --instock: #00897b;
+    --nopo: #e53935;
+    --sch5: #fb8c00;
+    --sch5plus: #fdd835;
+    --pending: #90a4ae;
+    --oos: #c62828;
+    --risk6: #ef6c00;
+    --risk10: #f9a825;
+    --green-doh: #43a047;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--fk-bg); color: #212121; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--fk-dark) 0%, var(--fk-blue) 100%);
+    padding: 16px 28px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .fk-logo { background: #fff; color: var(--fk-blue); font-weight: 900; font-size: 13px;
+    padding: 4px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+  .header h1 { color: #fff; font-size: 20px; font-weight: 700; }
+  .header-right { text-align: right; }
+  .header-right span { color: rgba(255,255,255,0.8); font-size: 12px; display: block; }
+  .last-updated { color: #fff; font-size: 13px; font-weight: 500; }
+  .refresh-btn {
+    background: var(--fk-orange); color: #fff; border: none; padding: 8px 18px;
+    border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600;
+    margin-top: 4px; transition: background 0.2s;
+  }
+  .refresh-btn:hover { background: #e55a15; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    background: #fff; padding: 12px 28px; display: flex; flex-wrap: wrap; gap: 12px;
+    align-items: center; border-bottom: 2px solid var(--fk-blue);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100;
+  }
+  .filter-bar label { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; }
+  .filter-group { display: flex; flex-direction: column; gap: 3px; }
+  .filter-group select {
+    border: 1.5px solid #ddd; border-radius: 4px; padding: 5px 10px;
+    font-size: 13px; color: #333; background: #fafafa; min-width: 140px;
+    transition: border-color 0.2s;
+  }
+  .filter-group select:focus { border-color: var(--fk-blue); outline: none; }
+  .filter-search {
+    border: 1.5px solid #ddd; border-radius: 4px; padding: 5px 10px;
+    font-size: 13px; min-width: 200px; background: #fafafa;
+  }
+  .filter-search:focus { border-color: var(--fk-blue); outline: none; }
+  .clear-btn {
+    background: #fff; color: var(--fk-blue); border: 1.5px solid var(--fk-blue);
+    padding: 5px 14px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    font-weight: 600; transition: all 0.2s; align-self: flex-end;
+  }
+  .clear-btn:hover { background: var(--fk-blue); color: #fff; }
+
+  /* MAIN CONTENT */
+  .main { padding: 20px 28px; }
+
+  /* KPI CARDS */
+  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-card {
+    background: #fff; border-radius: 8px; padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid var(--fk-blue);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+  .kpi-card.instock { border-top-color: var(--instock); }
+  .kpi-card.oos { border-top-color: var(--oos); }
+  .kpi-card.nopo { border-top-color: var(--nopo); }
+  .kpi-card.scheduled { border-top-color: var(--sch5); }
+  .kpi-card.pending { border-top-color: var(--pending); }
+  .kpi-label { font-size: 11px; text-transform: uppercase; color: #777; font-weight: 700; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 28px; font-weight: 800; color: #212121; margin: 4px 0; }
+  .kpi-sub { font-size: 12px; color: #999; }
+  .kpi-pct { font-size: 13px; font-weight: 700; }
+
+  /* CHART ROWS */
+  .chart-row { display: grid; gap: 16px; margin-bottom: 16px; }
+  .chart-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .chart-row-2 { grid-template-columns: 2fr 1fr; }
+  .chart-row-full { grid-template-columns: 1fr; }
+  .chart-card {
+    background: #fff; border-radius: 8px; padding: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .chart-title {
+    font-size: 13px; font-weight: 700; color: #333; margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 1px solid #f0f0f0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .chart-title span { font-size: 11px; color: #999; font-weight: 400; }
+  .chart-container { position: relative; }
+
+  /* STATUS BADGE */
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+  }
+  .badge-instock { background: #e8f5e9; color: #2e7d32; }
+  .badge-nopo { background: #ffebee; color: #c62828; }
+  .badge-sch5 { background: #fff3e0; color: #e65100; }
+  .badge-sch5plus { background: #fffde7; color: #f57f17; }
+  .badge-pending { background: #eceff1; color: #546e7a; }
+  .badge-oos { background: #ffebee; color: #b71c1c; }
+
+  /* TABLE */
+  .table-card {
+    background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden; margin-bottom: 20px;
+  }
+  .table-header {
+    padding: 14px 18px; display: flex; justify-content: space-between;
+    align-items: center; border-bottom: 1px solid #f0f0f0;
+  }
+  .table-title { font-size: 14px; font-weight: 700; color: #333; }
+  .table-meta { font-size: 12px; color: #999; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead tr { background: var(--fk-blue); color: #fff; }
+  thead th {
+    padding: 10px 12px; text-align: left; font-weight: 600;
+    white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  thead th:hover { background: #1a65d6; }
+  thead th.sorted-asc::after { content: ' ▲'; font-size: 10px; }
+  thead th.sorted-desc::after { content: ' ▼'; font-size: 10px; }
+  tbody tr { border-bottom: 1px solid #f5f5f5; transition: background 0.1s; }
+  tbody tr:hover { background: #f8f9ff; }
+  tbody td { padding: 8px 12px; white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+  .pagination {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px; border-top: 1px solid #f0f0f0; font-size: 13px;
+  }
+  .pagination-btns { display: flex; gap: 6px; }
+  .pg-btn {
+    padding: 4px 10px; border: 1px solid #ddd; border-radius: 4px;
+    background: #fff; cursor: pointer; font-size: 12px; transition: all 0.15s;
+  }
+  .pg-btn:hover { background: var(--fk-blue); color: #fff; border-color: var(--fk-blue); }
+  .pg-btn.active { background: var(--fk-blue); color: #fff; border-color: var(--fk-blue); }
+  .pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* LOADING */
+  .loading {
+    display: flex; align-items: center; justify-content: center;
+    height: 200px; flex-direction: column; gap: 12px; color: #999;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid #e0e0e0;
+    border-top-color: var(--fk-blue); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #555; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* DIVIDER */
+  .section-title {
+    font-size: 13px; font-weight: 700; color: var(--fk-blue);
+    text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 12px;
+    padding-bottom: 6px; border-bottom: 2px solid var(--fk-blue);
+  }
+
+  /* ALERT BANNER */
+  .alert-bar {
+    background: #fff3e0; border-left: 4px solid var(--fk-orange);
+    padding: 10px 18px; margin-bottom: 16px; border-radius: 0 6px 6px 0;
+    font-size: 13px; color: #e65100; font-weight: 500;
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: repeat(3, 1fr); }
+    .chart-row-3, .chart-row-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="fk-logo">flipkart</div>
+    <h1>🛒 Grocery RCA Dashboard</h1>
+  </div>
+  <div class="header-right">
+    <span>Last Updated</span>
+    <div class="last-updated" id="lastUpdated">Loading...</div>
+    <button class="refresh-btn" onclick="loadData()">↻ Refresh Data</button>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-group">
+    <label>FC</label>
+    <select id="f-fc" onchange="applyFilters()"><option value="">All FCs</option></select>
+  </div>
+  <div class="filter-group">
+    <label>BU</label>
+    <select id="f-bu" onchange="applyFilters()"><option value="">All BUs</option></select>
+  </div>
+  <div class="filter-group">
+    <label>Brand</label>
+    <select id="f-brand" onchange="applyFilters()"><option value="">All Brands</option></select>
+  </div>
+  <div class="filter-group">
+    <label>Vendor</label>
+    <select id="f-vendor" onchange="applyFilters()"><option value="">All Vendors</option></select>
+  </div>
+  <div class="filter-group">
+    <label>Instock View</label>
+    <select id="f-instock" onchange="applyFilters()"><option value="">All</option></select>
+  </div>
+  <div class="filter-group">
+    <label>DOH Bucket</label>
+    <select id="f-doh" onchange="applyFilters()"><option value="">All</option></select>
+  </div>
+  <div class="filter-group">
+    <label>Search FSN/Product</label>
+    <input class="filter-search" id="f-search" placeholder="Type FSN or product name..." oninput="applyFilters()"/>
+  </div>
+  <button class="clear-btn" onclick="clearFilters()">✕ Clear</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="alert-bar" id="alertBar"></div>
+
+  <!-- KPIs -->
+  <div class="section-title">📊 Key Metrics</div>
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Total SKUs</div>
+      <div class="kpi-value" id="kpi-total">-</div>
+      <div class="kpi-sub">FC × FSN combinations</div>
+    </div>
+    <div class="kpi-card instock">
+      <div class="kpi-label">Instock</div>
+      <div class="kpi-value" id="kpi-instock">-</div>
+      <div class="kpi-sub"><span class="kpi-pct" id="kpi-instock-pct" style="color:var(--instock)">-</span> of total</div>
+    </div>
+    <div class="kpi-card oos">
+      <div class="kpi-label">OOS</div>
+      <div class="kpi-value" id="kpi-oos">-</div>
+      <div class="kpi-sub"><span class="kpi-pct" id="kpi-oos-pct" style="color:var(--oos)">-</span> of total</div>
+    </div>
+    <div class="kpi-card nopo">
+      <div class="kpi-label">No PO</div>
+      <div class="kpi-value" id="kpi-nopo">-</div>
+      <div class="kpi-sub"><span class="kpi-pct" id="kpi-nopo-pct" style="color:var(--nopo)">-</span> of total</div>
+    </div>
+    <div class="kpi-card scheduled">
+      <div class="kpi-label">Scheduled</div>
+      <div class="kpi-value" id="kpi-scheduled">-</div>
+      <div class="kpi-sub"><span class="kpi-pct" id="kpi-scheduled-pct" style="color:var(--sch5)">-</span> of total</div>
+    </div>
+    <div class="kpi-card pending">
+      <div class="kpi-label">Pending Schedule</div>
+      <div class="kpi-value" id="kpi-pending">-</div>
+      <div class="kpi-sub"><span class="kpi-pct" id="kpi-pending-pct" style="color:var(--pending)">-</span> of total</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 1 -->
+  <div class="section-title">📈 Instock & Risk Overview</div>
+  <div class="chart-row chart-row-3">
+    <div class="chart-card">
+      <div class="chart-title">Instock View Breakdown <span>by SKU count</span></div>
+      <div class="chart-container" style="height:220px">
+        <canvas id="chart-instock-donut"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">DOH Bucket Distribution <span>days of holding</span></div>
+      <div class="chart-container" style="height:220px">
+        <canvas id="chart-doh-donut"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Scheduling Remarks <span>action needed</span></div>
+      <div class="chart-container" style="height:220px">
+        <canvas id="chart-remarks-donut"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2 -->
+  <div class="section-title">🏭 FC-Level Breakdown</div>
+  <div class="chart-row chart-row-full">
+    <div class="chart-card">
+      <div class="chart-title">Instock View by FC <span>stacked % of SKUs</span></div>
+      <div class="chart-container" style="height:280px">
+        <canvas id="chart-fc-stacked"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 3 -->
+  <div class="section-title">📦 Category & Vendor Analysis</div>
+  <div class="chart-row chart-row-2">
+    <div class="chart-card">
+      <div class="chart-title">OOS & No PO by BU <span>at-risk SKU count</span></div>
+      <div class="chart-container" style="height:260px">
+        <canvas id="chart-bu-risk"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top Vendors by At-Risk SKUs <span>OOS + No PO</span></div>
+      <div class="chart-container" style="height:260px">
+        <canvas id="chart-vendor-risk"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 4 -->
+  <div class="chart-row chart-row-2">
+    <div class="chart-card">
+      <div class="chart-title">ATP Distribution by FC <span>avg ATP per FC</span></div>
+      <div class="chart-container" style="height:240px">
+        <canvas id="chart-atp-fc"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Intransit Qty by FC <span>open PO intransit</span></div>
+      <div class="chart-container" style="height:240px">
+        <canvas id="chart-intransit-fc"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL TABLE -->
+  <div class="section-title">📋 SKU Detail View</div>
+  <div class="table-card">
+    <div class="table-header">
+      <div class="table-title">All SKUs</div>
+      <div class="table-meta" id="table-meta">Loading...</div>
+    </div>
+    <div class="table-wrap">
+      <table id="detail-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable('FC')">FC</th>
+            <th onclick="sortTable('FSN')">FSN</th>
+            <th onclick="sortTable('product_title')">Product</th>
+            <th onclick="sortTable('BU')">BU</th>
+            <th onclick="sortTable('brand')">Brand</th>
+            <th onclick="sortTable('vendor_full_name')">Vendor</th>
+            <th onclick="sortTable('ATP')">ATP</th>
+            <th onclick="sortTable('DRR')">DRR</th>
+            <th onclick="sortTable('doh_days')">DOH Days</th>
+            <th onclick="sortTable('doh_bucket')">DOH Bucket</th>
+            <th onclick="sortTable('ovr_intransit_qty')">Intransit Qty</th>
+            <th onclick="sortTable('open_po_count')">Open POs</th>
+            <th onclick="sortTable('Sch_Date')">Sch Date</th>
+            <th onclick="sortTable('Instock_View')">Instock View</th>
+            <th onclick="sortTable('Scheduling_Remarks')">Sch Remarks</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="15"><div class="loading"><div class="spinner"></div><span>Loading data...</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <div id="page-info" style="font-size:12px;color:#666"></div>
+      <div class="pagination-btns" id="pagination-btns"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const SHEET_ID = '1LU-KdXi8IpQVN4mzR74FSovBPkxbC4_7YycRyYplAWM';
+const SHEET_NAME = 'RCA Data';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let rawData = [];
+let filteredData = [];
+let charts = {};
+let sortCol = '';
+let sortDir = 1;
+let currentPage = 1;
+const PAGE_SIZE = 50;
+
+// ── COLORS ────────────────────────────────────────────────────────────────────
+const STATUS_COLORS = {
+  'Instock':            '#00897b',
+  'No PO':              '#e53935',
+  'Scheduled <5 days':  '#fb8c00',
+  'Scheduled >5 days':  '#fdd835',
+  'Pending to schedule':'#90a4ae',
+};
+const DOH_COLORS = {
+  'oos':        '#c62828',
+  '6_doh_risk': '#ef6c00',
+  '10_doh_risk':'#f9a825',
+  'green':      '#43a047',
+};
+
+// ── LOAD DATA ─────────────────────────────────────────────────────────────────
+function loadData() {
+  document.getElementById('lastUpdated').textContent = 'Loading...';
+  Papa.parse(CSV_URL, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      rawData = results.data;
+      document.getElementById('lastUpdated').textContent = new Date().toLocaleString('en-IN');
+      populateFilters();
+      applyFilters();
+      checkAlerts();
+    },
+    error: function(err) {
+      document.getElementById('lastUpdated').textContent = 'Error loading data';
+      showAlert('⚠️ Could not fetch data. Make sure the Google Sheet is shared publicly (Anyone with link → Viewer).');
+    }
+  });
+}
+
+// ── ALERTS ────────────────────────────────────────────────────────────────────
+function checkAlerts() {
+  const oos = rawData.filter(r => r.doh_bucket === 'oos').length;
+  const nopo = rawData.filter(r => r.Instock_View === 'No PO').length;
+  if (oos > 0 || nopo > 0) {
+    showAlert(`🚨 ${oos} OOS SKUs detected | ${nopo} SKUs with No PO — immediate action required`);
+  }
+}
+function showAlert(msg) {
+  const el = document.getElementById('alertBar');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── POPULATE FILTERS ──────────────────────────────────────────────────────────
+function populateFilters() {
+  const fields = { 'f-fc':'FC', 'f-bu':'BU', 'f-brand':'brand', 'f-vendor':'vendor_full_name',
+                   'f-instock':'Instock_View', 'f-doh':'doh_bucket' };
+  Object.entries(fields).forEach(([id, col]) => {
+    const sel = document.getElementById(id);
+    const current = sel.value;
+    const vals = [...new Set(rawData.map(r => r[col]).filter(Boolean))].sort();
+    sel.innerHTML = `<option value="">All</option>` + vals.map(v => `<option value="${v}">${v}</option>`).join('');
+    if (current) sel.value = current;
+  });
+}
+
+// ── APPLY FILTERS ─────────────────────────────────────────────────────────────
+function applyFilters() {
+  const fc      = document.getElementById('f-fc').value;
+  const bu      = document.getElementById('f-bu').value;
+  const brand   = document.getElementById('f-brand').value;
+  const vendor  = document.getElementById('f-vendor').value;
+  const instock = document.getElementById('f-instock').value;
+  const doh     = document.getElementById('f-doh').value;
+  const search  = document.getElementById('f-search').value.toLowerCase();
+
+  filteredData = rawData.filter(r =>
+    (!fc      || r.FC === fc) &&
+    (!bu      || r.BU === bu) &&
+    (!brand   || r.brand === brand) &&
+    (!vendor  || r.vendor_full_name === vendor) &&
+    (!instock || r.Instock_View === instock) &&
+    (!doh     || r.doh_bucket === doh) &&
+    (!search  || r.FSN?.toLowerCase().includes(search) || r.product_title?.toLowerCase().includes(search))
+  );
+
+  currentPage = 1;
+  updateKPIs();
+  updateCharts();
+  renderTable();
+}
+
+function clearFilters() {
+  ['f-fc','f-bu','f-brand','f-vendor','f-instock','f-doh'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-search').value = '';
+  applyFilters();
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────────────────
+function updateKPIs() {
+  const total = filteredData.length;
+  const counts = {};
+  filteredData.forEach(r => { counts[r.Instock_View] = (counts[r.Instock_View]||0)+1; });
+
+  const pct = v => total ? (v/total*100).toFixed(1)+'%' : '0%';
+  const instock   = counts['Instock']||0;
+  const oos       = filteredData.filter(r => r.doh_bucket === 'oos').length;
+  const nopo      = counts['No PO']||0;
+  const scheduled = (counts['Scheduled <5 days']||0)+(counts['Scheduled >5 days']||0);
+  const pending   = counts['Pending to schedule']||0;
+
+  document.getElementById('kpi-total').textContent     = total.toLocaleString();
+  document.getElementById('kpi-instock').textContent   = instock.toLocaleString();
+  document.getElementById('kpi-oos').textContent       = oos.toLocaleString();
+  document.getElementById('kpi-nopo').textContent      = nopo.toLocaleString();
+  document.getElementById('kpi-scheduled').textContent = scheduled.toLocaleString();
+  document.getElementById('kpi-pending').textContent   = pending.toLocaleString();
+  document.getElementById('kpi-instock-pct').textContent   = pct(instock);
+  document.getElementById('kpi-oos-pct').textContent       = pct(oos);
+  document.getElementById('kpi-nopo-pct').textContent      = pct(nopo);
+  document.getElementById('kpi-scheduled-pct').textContent = pct(scheduled);
+  document.getElementById('kpi-pending-pct').textContent   = pct(pending);
+}
+
+// ── CHARTS ────────────────────────────────────────────────────────────────────
+function makeDonut(id, labels, data, colors) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id).getContext('2d');
+  charts[id] = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 10 } },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw.toLocaleString()} (${(ctx.parsed/(ctx.dataset.data.reduce((a,b)=>a+b,0)||1)*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+}
+
+function makeBar(id, labels, datasets, opts={}) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id).getContext('2d');
+  charts[id] = new Chart(ctx, {
+    type: opts.horizontal ? 'bar' : 'bar',
+    data: { labels, datasets },
+    options: {
+      indexAxis: opts.horizontal ? 'y' : 'x',
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { stacked: opts.stacked||false, grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { stacked: opts.stacked||false, grid: { color: '#f5f5f5' }, ticks: { font: { size: 10 } } }
+      },
+      plugins: {
+        legend: { display: opts.legend !== false, labels: { font: { size: 11 }, padding: 8 } },
+        tooltip: { mode: 'index', intersect: false }
+      }
+    }
+  });
+}
+
+function updateCharts() {
+  const data = filteredData;
+
+  // 1. Instock View Donut
+  const statusKeys = Object.keys(STATUS_COLORS);
+  const statusCounts = statusKeys.map(k => data.filter(r => r.Instock_View === k).length);
+  makeDonut('chart-instock-donut', statusKeys, statusCounts, statusKeys.map(k => STATUS_COLORS[k]));
+
+  // 2. DOH Bucket Donut
+  const dohKeys = Object.keys(DOH_COLORS);
+  const dohCounts = dohKeys.map(k => data.filter(r => r.doh_bucket === k).length);
+  makeDonut('chart-doh-donut', dohKeys, dohCounts, dohKeys.map(k => DOH_COLORS[k]));
+
+  // 3. Scheduling Remarks Donut
+  const remKeys = [...new Set(data.map(r => r.Scheduling_Remarks).filter(Boolean))];
+  const remCounts = remKeys.map(k => data.filter(r => r.Scheduling_Remarks === k).length);
+  const remColors = remKeys.map(k => STATUS_COLORS[k] || '#90a4ae');
+  makeDonut('chart-remarks-donut', remKeys, remCounts, remColors);
+
+  // 4. FC Stacked Bar (% breakdown)
+  const fcs = [...new Set(data.map(r => r.FC))].sort();
+  const fcDatasets = statusKeys.map(status => ({
+    label: status,
+    data: fcs.map(fc => {
+      const fcRows = data.filter(r => r.FC === fc);
+      return fcRows.length ? +(fcRows.filter(r => r.Instock_View === status).length / fcRows.length * 100).toFixed(1) : 0;
+    }),
+    backgroundColor: STATUS_COLORS[status]
+  }));
+  makeBar('chart-fc-stacked', fcs, fcDatasets, { stacked: true, legend: true });
+
+  // 5. BU At-Risk Bar
+  const bus = [...new Set(data.map(r => r.BU).filter(Boolean))].sort();
+  const buOos  = bus.map(bu => data.filter(r => r.BU === bu && r.doh_bucket === 'oos').length);
+  const buNopo = bus.map(bu => data.filter(r => r.BU === bu && r.Instock_View === 'No PO').length);
+  makeBar('chart-bu-risk', bus, [
+    { label: 'OOS', data: buOos, backgroundColor: '#e53935' },
+    { label: 'No PO', data: buNopo, backgroundColor: '#fb8c00' }
+  ], { legend: true });
+
+  // 6. Vendor Risk Bar (top 10)
+  const vendorRisk = {};
+  data.forEach(r => {
+    if (!r.vendor_full_name || r.vendor_full_name === 'NA - Check manually') return;
+    if (r.Instock_View === 'No PO' || r.doh_bucket === 'oos') {
+      vendorRisk[r.vendor_full_name] = (vendorRisk[r.vendor_full_name]||0)+1;
+    }
+  });
+  const topVendors = Object.entries(vendorRisk).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  makeBar('chart-vendor-risk',
+    topVendors.map(v => v[0].length > 20 ? v[0].slice(0,20)+'...' : v[0]),
+    [{ label: 'At-Risk SKUs', data: topVendors.map(v=>v[1]), backgroundColor: '#2874f0' }],
+    { horizontal: true, legend: false }
+  );
+
+  // 7. ATP by FC
+  const atpByFc = fcs.map(fc => {
+    const rows = data.filter(r => r.FC === fc && r.ATP);
+    return rows.length ? +(rows.reduce((s,r)=>s+parseFloat(r.ATP||0),0)/rows.length).toFixed(0) : 0;
+  });
+  makeBar('chart-atp-fc', fcs,
+    [{ label: 'Avg ATP', data: atpByFc, backgroundColor: '#2874f0', borderRadius: 4 }],
+    { legend: false }
+  );
+
+  // 8. Intransit by FC
+  const intByFc = fcs.map(fc =>
+    data.filter(r => r.FC === fc).reduce((s,r)=>s+parseFloat(r.ovr_intransit_qty||0),0)
+  );
+  makeBar('chart-intransit-fc', fcs,
+    [{ label: 'Total Intransit Qty', data: intByFc, backgroundColor: '#00897b', borderRadius: 4 }],
+    { legend: false }
+  );
+}
+
+// ── TABLE ─────────────────────────────────────────────────────────────────────
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  filteredData.sort((a,b) => {
+    const av = parseFloat(a[col]) || a[col] || '';
+    const bv = parseFloat(b[col]) || b[col] || '';
+    return av < bv ? -sortDir : av > bv ? sortDir : 0;
+  });
+  currentPage = 1;
+  renderTable();
+  document.querySelectorAll('thead th').forEach(th => {
+    th.classList.remove('sorted-asc','sorted-desc');
+    if (th.textContent.replace(/ [▲▼]/,'').trim() === col.replace(/_/g,' '))
+      th.classList.add(sortDir===1 ? 'sorted-asc' : 'sorted-desc');
+  });
+}
+
+function statusBadge(val) {
+  const map = {
+    'Instock': 'badge-instock', 'No PO': 'badge-nopo',
+    'Scheduled <5 days': 'badge-sch5', 'Scheduled >5 days': 'badge-sch5plus',
+    'Pending to schedule': 'badge-pending'
+  };
+  const cls = map[val] || '';
+  return `<span class="badge ${cls}">${val||''}</span>`;
+}
+
+function dohBadge(val) {
+  const map = { 'oos':'badge-oos', '6_doh_risk':'badge-sch5', '10_doh_risk':'badge-sch5plus', 'green':'badge-instock' };
+  const cls = map[val] || '';
+  return `<span class="badge ${cls}">${val||''}</span>`;
+}
+
+function renderTable() {
+  const start = (currentPage-1)*PAGE_SIZE;
+  const pageData = filteredData.slice(start, start+PAGE_SIZE);
+  const tbody = document.getElementById('table-body');
+
+  if (filteredData.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="15" style="text-align:center;padding:40px;color:#999">No data matching filters</td></tr>';
+    document.getElementById('table-meta').textContent = '0 records';
+    document.getElementById('page-info').textContent = '';
+    document.getElementById('pagination-btns').innerHTML = '';
+    return;
+  }
+
+  tbody.innerHTML = pageData.map(r => `
+    <tr>
+      <td><b>${r.FC||''}</b></td>
+      <td style="font-family:monospace;font-size:11px">${r.FSN||''}</td>
+      <td title="${r.product_title||''}">${(r.product_title||'').slice(0,35)}${r.product_title?.length>35?'...':''}</td>
+      <td>${r.BU||''}</td>
+      <td>${r.brand||''}</td>
+      <td title="${r.vendor_full_name||''}">${(r.vendor_full_name||'').slice(0,25)}${r.vendor_full_name?.length>25?'...':''}</td>
+      <td style="text-align:right"><b>${parseFloat(r.ATP||0).toLocaleString()}</b></td>
+      <td style="text-align:right">${parseFloat(r.DRR||0).toFixed(1)}</td>
+      <td style="text-align:right">${r.doh_days ? parseFloat(r.doh_days).toFixed(1) : '-'}</td>
+      <td>${dohBadge(r.doh_bucket)}</td>
+      <td style="text-align:right">${parseFloat(r.ovr_intransit_qty||0).toLocaleString()}</td>
+      <td style="text-align:right">${r.open_po_count||0}</td>
+      <td>${r.Sch_Date||'-'}</td>
+      <td>${statusBadge(r.Instock_View)}</td>
+      <td>${statusBadge(r.Scheduling_Remarks)}</td>
+    </tr>
+  `).join('');
+
+  const total = filteredData.length;
+  const pages = Math.ceil(total/PAGE_SIZE);
+  document.getElementById('table-meta').textContent = `${total.toLocaleString()} records`;
+  document.getElementById('page-info').textContent = `Showing ${start+1}–${Math.min(start+PAGE_SIZE, total)} of ${total.toLocaleString()}`;
+
+  const btns = document.getElementById('pagination-btns');
+  btns.innerHTML = '';
+  const addBtn = (label, page, disabled=false, active=false) => {
+    const b = document.createElement('button');
+    b.className = 'pg-btn' + (active?' active':'');
+    b.textContent = label;
+    b.disabled = disabled;
+    b.onclick = () => { currentPage = page; renderTable(); };
+    btns.appendChild(b);
+  };
+  addBtn('«', 1, currentPage===1);
+  addBtn('‹', currentPage-1, currentPage===1);
+  const startP = Math.max(1, currentPage-2);
+  const endP   = Math.min(pages, currentPage+2);
+  for (let p=startP; p<=endP; p++) addBtn(p, p, false, p===currentPage);
+  addBtn('›', currentPage+1, currentPage===pages);
+  addBtn('»', pages, currentPage===pages);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
