@@ -489,9 +489,9 @@ let riskSort={col:'DRR',dir:-1};
 window.onload=async function(){
   try{
     setProgress(10,'Connecting to Google Drive…');
-    const res=await fetch(APPS_SCRIPT_URL);
+    const res=await fetch(APPS_SCRIPT_URL,{credentials:'include',redirect:'follow'});
     setProgress(50,'Parsing data…');
-    if(!res.ok)throw new Error('HTTP '+res.status);
+    if(!res.ok)throw new Error('HTTP '+res.status+' — make sure you are signed into your Flipkart Google account');
     const text=await res.text();
     let parsed;try{parsed=JSON.parse(text);}catch(e){parsed=null;}
     if(parsed&&parsed.error)throw new Error(parsed.error);
