@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Grocery RCA Dashboard</title>
 <style>
-:root{--fk-blue:#2874f0;--fk-dark:#1a237e;--fk-orange:#fb641b;--fk-bg:#f1f3f6;--fk-card:#fff;--instock:#00897b;--nopo:#e53935;--sch5:#fb8c00;--sch5p:#f9a825;--pending:#90a4ae;--oos:#c62828;}
+:root{--fk-blue:#2874f0;--fk-dark:#1a237e;--fk-orange:#fb641b;--fk-bg:#f1f3f6;--instock:#00897b;--nopo:#e53935;--sch5:#fb8c00;--sch5p:#f9a825;--pending:#90a4ae;--oos:#c62828;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--fk-bg);color:#212121;}
 .header{background:linear-gradient(135deg,var(--fk-dark),var(--fk-blue));padding:14px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.3);}
@@ -13,14 +13,14 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--fk-bg);color:#2121
 .fk-logo{background:#fff;color:var(--fk-blue);font-weight:900;font-size:12px;padding:3px 7px;border-radius:4px;}
 .header h1{color:#fff;font-size:19px;font-weight:700;}
 .header-right{display:flex;align-items:center;gap:14px;}
-.raw-btn{display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--fk-blue);font-size:13px;font-weight:700;padding:6px 13px;border-radius:6px;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.2);white-space:nowrap;}
+.raw-btn{display:inline-flex;align-items:center;gap:5px;background:#fff;color:var(--fk-blue);font-size:13px;font-weight:700;padding:6px 13px;border-radius:6px;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.2);}
 .raw-btn:hover{opacity:.85;}
 .last-updated{color:#fff;font-size:13px;font-weight:500;}
 .date-sub{color:rgba(255,255,255,.75);font-size:11px;display:block;}
 .filter-bar{background:#fff;padding:10px 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border-bottom:2px solid var(--fk-blue);box-shadow:0 1px 4px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
 .fg{display:flex;flex-direction:column;gap:2px;}
 .fg label{font-size:10px;font-weight:700;color:#666;text-transform:uppercase;}
-.fg select,.fg input{border:1.5px solid #ddd;border-radius:4px;padding:4px 8px;font-size:12px;color:#333;background:#fafafa;min-width:130px;}
+.fg select,.fg input{border:1.5px solid #ddd;border-radius:4px;padding:4px 8px;font-size:12px;color:#333;background:#fafafa;min-width:120px;}
 .fg select:focus,.fg input:focus{border-color:var(--fk-blue);outline:none;}
 .clear-btn{background:#fff;color:var(--fk-blue);border:1.5px solid var(--fk-blue);padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;align-self:flex-end;}
 .clear-btn:hover{background:var(--fk-blue);color:#fff;}
@@ -28,8 +28,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--fk-bg);color:#2121
 .section-title{font-size:12px;font-weight:700;color:var(--fk-blue);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;padding-bottom:5px;border-bottom:2px solid var(--fk-blue);}
 .alert-bar{background:#fff3e0;border-left:4px solid var(--fk-orange);padding:9px 16px;margin-bottom:14px;border-radius:0 6px 6px 0;font-size:13px;color:#e65100;font-weight:500;display:none;}
 .kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px;}
-.kpi-card{background:#fff;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-top:4px solid var(--fk-blue);transition:transform .15s;}
-.kpi-card:hover{transform:translateY(-2px);}
+.kpi-card{background:#fff;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-top:4px solid var(--fk-blue);}
 .kpi-card.instock{border-top-color:var(--instock);}
 .kpi-card.oos{border-top-color:var(--oos);}
 .kpi-card.nopo{border-top-color:var(--nopo);}
@@ -39,6 +38,15 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--fk-bg);color:#2121
 .kpi-value{font-size:26px;font-weight:800;margin:3px 0;}
 .kpi-sub{font-size:11px;color:#999;}
 .kpi-pct{font-size:12px;font-weight:700;}
+/* Projection */
+.proj-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px;}
+.proj-card{background:#fff;border-radius:8px;padding:12px 16px;box-shadow:0 1px 4px rgba(0,0,0,.08);text-align:center;}
+.proj-day{font-size:10px;font-weight:700;color:#777;text-transform:uppercase;margin-bottom:6px;}
+.proj-pct{font-size:22px;font-weight:800;}
+.proj-bar{height:6px;border-radius:3px;background:#eee;margin:6px 0;}
+.proj-bar-fill{height:100%;border-radius:3px;transition:width .4s;}
+.proj-qty{font-size:10px;color:#777;}
+/* Card */
 .card{background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:16px;}
 .card-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;gap:8px;}
 .card-title{font-size:13px;font-weight:700;color:#333;}
@@ -59,7 +67,6 @@ tfoot td{padding:7px 12px;}
 .pg-btns{display:flex;gap:4px;}
 .pg-btn{padding:3px 8px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;font-size:11px;}
 .pg-btn:hover,.pg-btn.active{background:var(--fk-blue);color:#fff;border-color:var(--fk-blue);}
-.pg-btn:disabled{opacity:.4;cursor:not-allowed;}
 .badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;}
 .b-instock{background:#e8f5e9;color:#2e7d32;}
 .b-nopo{background:#ffebee;color:#c62828;}
@@ -80,23 +87,25 @@ tfoot td{padding:7px 12px;}
 .clr-link{font-size:11px;color:var(--fk-blue);cursor:pointer;text-decoration:underline;display:none;}
 .toggle-btn{font-size:11px;color:#555;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;padding:3px 9px;cursor:pointer;}
 .toggle-btn:hover{background:#e8eaf6;color:var(--fk-blue);}
-.fr-tabs{display:flex;gap:0;border-bottom:2px solid var(--fk-blue);margin-bottom:14px;}
-.fr-tab{padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px 6px 0 0;background:#f5f5f5;color:#555;border:1px solid #ddd;border-bottom:none;margin-right:3px;}
-.fr-tab.active{background:var(--fk-blue);color:#fff;border-color:var(--fk-blue);}
-.fr-panel{display:none;}
-.fr-panel.active{display:block;}
+.fr-tabs,.sales-tabs{display:flex;gap:0;border-bottom:2px solid var(--fk-blue);margin-bottom:14px;}
+.fr-tab,.sales-tab{padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;border-radius:6px 6px 0 0;background:#f5f5f5;color:#555;border:1px solid #ddd;border-bottom:none;margin-right:3px;}
+.fr-tab.active,.sales-tab.active{background:var(--fk-blue);color:#fff;border-color:var(--fk-blue);}
+.fr-panel,.sales-panel{display:none;}
+.fr-panel.active,.sales-panel.active{display:block;}
 .ms-wrap{position:relative;}
-.ms-btn{border:1.5px solid #ddd;border-radius:4px;padding:4px 8px;font-size:12px;background:#fafafa;cursor:pointer;min-width:130px;text-align:left;}
+.ms-btn{border:1.5px solid #ddd;border-radius:4px;padding:4px 8px;font-size:12px;background:#fafafa;cursor:pointer;min-width:120px;text-align:left;}
 .ms-dropdown{position:absolute;top:100%;left:0;z-index:200;background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.15);min-width:200px;max-height:220px;overflow-y:auto;display:none;}
 .ms-dropdown.open{display:block;}
 .ms-item{display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;font-size:12px;}
 .ms-item:hover{background:#f5f5f5;}
-.ms-item input{cursor:pointer;}
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr);}}
+.trend-up{color:#00897b;font-weight:700;}
+.trend-dn{color:#e53935;font-weight:700;}
+.trend-fl{color:#777;}
+@media(max-width:900px){.kpi-row,.proj-row{grid-template-columns:repeat(3,1fr);}}
 </style>
 </head>
 <body>
-<div id="loading-overlay" style="position:fixed;inset:0;background:rgba(26,35,126,.92);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:18px;">
+<div id="loading-overlay" style="position:fixed;inset:0;background:rgba(26,35,126,.93);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:18px;">
   <div style="font-size:36px">🛒</div>
   <div style="font-size:18px;font-weight:700">Loading RCA Data…</div>
   <div id="loading-msg" style="font-size:13px;opacity:.8">Fetching today's file from Drive</div>
@@ -104,13 +113,14 @@ tfoot td{padding:7px 12px;}
     <div id="loading-bar" style="width:0%;height:100%;background:#fb641b;border-radius:3px;transition:width .4s ease"></div>
   </div>
 </div>
+
 <div class="header">
   <div class="header-left">
     <div class="fk-logo">flipkart</div>
     <h1>🛒 Grocery RCA Dashboard</h1>
   </div>
   <div class="header-right">
-    <a class="raw-btn" href="https://docs.google.com/spreadsheets/d/1LU-KdXi8IpQVN4mzR74FSovBPkxbC4_7YycRyYplAWM/edit?gid=1983367117#gid=1983367117" target="_blank">📄 Raw File</a>
+    <a class="raw-btn" href="https://drive.google.com/drive/folders/1dwjML__paeXt1pEP5x7mdV7iw8yCJ14H" target="_blank">📄 Drive Folder</a>
     <div style="text-align:right"><span class="date-sub">Data as of</span><div class="last-updated" id="lastUpdated">--</div></div>
   </div>
 </div>
@@ -118,7 +128,7 @@ tfoot td{padding:7px 12px;}
 <div class="filter-bar">
   <div class="fg"><label>FC</label><select id="f-fc" onchange="applyFilters()"><option value="">All FCs</option></select></div>
   <div class="fg"><label>BU</label><select id="f-bu" onchange="applyFilters()"><option value="">All BUs</option></select></div>
-  <div class="fg"><label>Brand</label><select id="f-brand" onchange="applyFilters()"><option value="">All Brands</option></select></div>
+  <div class="fg"><label>SC (Category)</label><select id="f-sc" onchange="applyFilters()"><option value="">All</option></select></div>
   <div class="fg"><label>Vendor</label><select id="f-vendor" onchange="applyFilters()"><option value="">All Vendors</option></select></div>
   <div class="fg"><label>Instock View</label><select id="f-instock" onchange="applyFilters()"><option value="">All</option></select></div>
   <div class="fg"><label>DOH Bucket</label><select id="f-doh" onchange="applyFilters()"><option value="">All</option></select></div>
@@ -140,11 +150,30 @@ tfoot td{padding:7px 12px;}
     <div class="kpi-card pending"><div class="kpi-label">Pending</div><div class="kpi-value" id="k-pend">-</div><div class="kpi-sub"><span class="kpi-pct" id="k-pend-p" style="color:var(--pending)">-</span></div></div>
   </div>
 
+  <!-- ATP PROJECTION -->
+  <div class="section-title">📉 5-Day ATP Projection</div>
+  <div class="proj-row" id="proj-cards"></div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">FC-Level Instock Projection</div>
+      <div class="card-meta" style="font-size:11px;color:#777">% of SKUs projected instock per day basis ATP decline + scheduled arrivals</div>
+    </div>
+    <div class="tbl-wrap">
+      <table><thead><tr>
+        <th>FC</th><th>SKUs</th>
+        <th style="background:#1b5e20">Today</th>
+        <th>Day+1</th><th>Day+2</th><th>Day+3</th><th>Day+4</th><th>Day+5</th>
+        <th>Fut. Sch. Qty</th>
+      </tr></thead>
+      <tbody id="proj-fc-body"></tbody></table>
+    </div>
+  </div>
+
   <!-- FC SUMMARY -->
   <div class="section-title">🏭 FC-Level Summary</div>
   <div class="card">
     <div class="card-header">
-      <div class="card-title">FC Breakdown <span style="font-size:11px;color:#999;font-weight:400;margin-left:6px">Click row to filter all views</span></div>
+      <div class="card-title">FC Breakdown <span style="font-size:11px;color:#999;font-weight:400;margin-left:6px">Click row to filter</span></div>
       <div class="card-controls">
         <div class="sort-controls"><label>Sort</label>
           <select id="fc-sort-col" onchange="renderFC()">
@@ -158,7 +187,7 @@ tfoot td{padding:7px 12px;}
         <span class="clr-link" id="fc-clr" onclick="clearFCFilter()">✕ Clear FC filter</span>
       </div>
     </div>
-    <div class="tbl-wrap" id="fc-tbl-wrap">
+    <div class="tbl-wrap">
       <table><thead><tr>
         <th>FC</th><th>Total</th>
         <th style="color:#a5d6a7">Instock</th><th style="color:#ef9a9a">No PO</th>
@@ -174,7 +203,7 @@ tfoot td{padding:7px 12px;}
   <div class="section-title">🏪 Vendor Summary</div>
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Vendor Breakdown <span style="font-size:11px;color:#999;font-weight:400;margin-left:6px">Independent FC filter</span></div>
+      <div class="card-title">Vendor Breakdown</div>
       <div class="card-controls">
         <div class="ms-wrap" id="vnd-fc-wrap">
           <button class="ms-btn" id="vnd-fc-btn" onclick="toggleMS('vnd-fc-dd')">All FCs ▾</button>
@@ -182,7 +211,7 @@ tfoot td{padding:7px 12px;}
         </div>
         <div class="sort-controls"><label>Sort</label>
           <select id="vnd-sort-col" onchange="renderVendor()">
-            <option value="key">Vendor Name</option><option value="total">Total</option>
+            <option value="key">Vendor</option><option value="total">Total</option>
             <option value="Instock">Instock</option><option value="No PO">No PO</option>
             <option value="Scheduled <5 days">Sch &lt;5d</option><option value="Scheduled >5 days">Sch &gt;5d</option>
             <option value="Pending to schedule">Pending</option>
@@ -190,7 +219,7 @@ tfoot td{padding:7px 12px;}
           </select>
           <select id="vnd-sort-dir" onchange="renderVendor()"><option value="desc">↓</option><option value="asc">↑</option></select>
         </div>
-        <span class="clr-link" id="vnd-clr" onclick="clearVendorFilter()">✕ Clear vendor filter</span>
+        <span class="clr-link" id="vnd-clr" onclick="clearVendorFilter()">✕ Clear</span>
         <button class="toggle-btn" onclick="toggleSection('vnd-tbl-wrap',this)">▲ Collapse</button>
       </div>
     </div>
@@ -206,11 +235,11 @@ tfoot td{padding:7px 12px;}
     </div>
   </div>
 
-  <!-- CATEGORY SUMMARY -->
-  <div class="section-title">📦 Category Summary (L1)</div>
+  <!-- CATEGORY (SC) SUMMARY -->
+  <div class="section-title">📦 Category Summary (SC)</div>
   <div class="card">
     <div class="card-header">
-      <div class="card-title">L1 Category Breakdown</div>
+      <div class="card-title">SC Breakdown</div>
       <div class="card-controls">
         <div class="sort-controls"><label>Sort</label>
           <select id="cat-sort-col" onchange="renderCat()">
@@ -221,13 +250,13 @@ tfoot td{padding:7px 12px;}
           </select>
           <select id="cat-sort-dir" onchange="renderCat()"><option value="desc">↓</option><option value="asc">↑</option></select>
         </div>
-        <span class="clr-link" id="cat-clr" onclick="clearCatFilter()">✕ Clear category filter</span>
+        <span class="clr-link" id="cat-clr" onclick="clearCatFilter()">✕ Clear</span>
         <button class="toggle-btn" onclick="toggleSection('cat-tbl-wrap',this)">▲ Collapse</button>
       </div>
     </div>
     <div class="tbl-wrap" id="cat-tbl-wrap">
       <table><thead><tr>
-        <th>L1 Category</th><th>Total</th><th style="color:#a5d6a7">Instock</th>
+        <th>SC Category</th><th>Total</th><th style="color:#a5d6a7">Instock</th>
         <th style="color:#ef9a9a">No PO</th><th style="color:#ffcc80">Sch &lt;5d</th>
         <th style="color:#fff176">Sch &gt;5d</th><th style="color:#cfd8dc">Pending</th>
         <th>% Instock</th><th>Mix</th>
@@ -246,22 +275,21 @@ tfoot td{padding:7px 12px;}
     </div>
     <div class="tbl-wrap">
       <table><thead><tr>
-        <th onclick="sortRisk('FC')">FC</th>
+        <th onclick="sortRisk('warehouse_id')">FC</th>
         <th onclick="sortRisk('vendor_full_name')">Vendor</th>
         <th onclick="sortRisk('FSN')">FSN</th>
         <th onclick="sortRisk('product_title')">Product</th>
         <th onclick="sortRisk('BU')">BU</th>
         <th onclick="sortRisk('DRR')">DRR ↓</th>
-        <th onclick="sortRisk('ATP')">ATP</th>
-        <th onclick="sortRisk('doh_days')">DOH Days</th>
+        <th onclick="sortRisk('atp')">ATP</th>
+        <th onclick="sortRisk('dohfinal')">DOH Days</th>
         <th onclick="sortRisk('doh_bucket')">DOH Bucket</th>
-        <th onclick="sortRisk('Instock_View')">Status</th>
-        <th onclick="sortRisk('Sch_Date')">Slot Date</th>
-        <th onclick="sortRisk('Latest_PO_Date')">Latest PO Date</th>
-        <th onclick="sortRisk('Latest_PO_Expiry')">PO Expiry</th>
-        <th onclick="sortRisk('PO_Remark')">PO Remark</th>
+        <th onclick="sortRisk('final_remarko')">Status</th>
+        <th onclick="sortRisk('min_exp_del_date')">Slot Date</th>
+        <th onclick="sortRisk('min_expiry_date_po')">PO Expiry</th>
         <th onclick="sortRisk('QFR')">QFR</th>
         <th onclick="sortRisk('LFR')">LFR</th>
+        <th onclick="sortRisk('kam')">KAM</th>
       </tr></thead>
       <tbody id="risk-body"></tbody></table>
     </div>
@@ -276,14 +304,15 @@ tfoot td{padding:7px 12px;}
     <div class="card-header" style="padding-bottom:0;border-bottom:none;">
       <div class="card-title">FR Views</div>
       <div class="card-controls">
-        <div class="fg"><label>FC Filter (FR)</label>
-          <div class="ms-wrap" id="fr-fc-wrap">
+        <div class="fg">
+          <label>FC Filter (FR)</label>
+          <div class="ms-wrap">
             <button class="ms-btn" id="fr-fc-btn" onclick="toggleMS('fr-fc-dd')">All FCs ▾</button>
             <div class="ms-dropdown" id="fr-fc-dd"></div>
           </div>
         </div>
         <div class="fg"><label>Vendor</label><select id="fr-vnd-search" onchange="renderFRAll()" style="min-width:180px"><option value="">All Vendors</option></select></div>
-        <div class="fg"><label>Search FSN</label><input id="fr-fsn-search" placeholder="FSN or product..." oninput="renderFRAll()" style="min-width:150px"/></div>
+        <div class="fg"><label>Search FSN</label><input id="fr-fsn-search" placeholder="FSN or product..." oninput="renderFRAll()" style="min-width:140px"/></div>
       </div>
     </div>
     <div style="padding:0 16px;">
@@ -293,60 +322,104 @@ tfoot td{padding:7px 12px;}
         <div class="fr-tab" onclick="switchFRTab(2)">FC × Vendor</div>
         <div class="fr-tab" onclick="switchFRTab(3)">FSN Detail</div>
       </div>
-
-      <!-- FR Tab 0: FC Trend -->
       <div class="fr-panel active" id="fr-p0">
-        <div class="tbl-wrap">
-          <table><thead><tr>
-            <th onclick="sortFR(0,'FC')">FC</th><th>Total FSNs</th>
-            <th>Avg QFR</th><th>Avg LFR</th>
-            <th>No Issues</th><th>NR-30</th><th>FR Gap</th><th>New PO</th><th>No PO</th><th>Mix</th>
-          </tr></thead><tbody id="fr-fc-body"></tbody></table>
-        </div>
+        <div class="tbl-wrap"><table><thead><tr>
+          <th>FC</th><th>Total FSNs</th><th>Avg QFR</th><th>Avg LFR</th>
+          <th>No Issues</th><th>NR-30</th><th>FR Gap</th><th>New PO</th><th>No PO</th><th>Mix</th>
+        </tr></thead><tbody id="fr-fc-body"></tbody></table></div>
       </div>
-
-      <!-- FR Tab 1: Vendor Pan India -->
       <div class="fr-panel" id="fr-p1">
-        <div class="tbl-wrap">
-          <table><thead><tr>
-            <th onclick="sortFR(1,'vendor')">Vendor</th><th>FSN Count</th>
-            <th>Avg QFR</th><th>Avg LFR</th>
-            <th>No Issues</th><th>NR-30</th><th>FR Gap</th><th>New PO</th><th>No PO</th>
-          </tr></thead><tbody id="fr-vnd-body"></tbody></table>
-        </div>
+        <div class="tbl-wrap"><table><thead><tr>
+          <th>Vendor</th><th>FSN Count</th><th>Avg QFR</th><th>Avg LFR</th>
+          <th>No Issues</th><th>NR-30</th><th>FR Gap</th><th>New PO</th><th>No PO</th>
+        </tr></thead><tbody id="fr-vnd-body"></tbody></table></div>
       </div>
-
-      <!-- FR Tab 2: FC x Vendor -->
       <div class="fr-panel" id="fr-p2">
-        <div class="tbl-wrap">
-          <table><thead><tr>
-            <th onclick="sortFR(2,'FC')">FC</th><th onclick="sortFR(2,'vendor')">Vendor</th>
-            <th>FSN Count</th><th>Avg QFR</th><th>Avg LFR</th>
-            <th>QFR Bucket</th><th>LFR Bucket</th>
-          </tr></thead><tbody id="fr-fcvnd-body"></tbody></table>
-        </div>
+        <div class="tbl-wrap"><table><thead><tr>
+          <th>FC</th><th>Vendor</th><th>FSN Count</th><th>Avg QFR</th><th>Avg LFR</th>
+          <th>QFR Bucket</th><th>LFR Bucket</th>
+        </tr></thead><tbody id="fr-fcvnd-body"></tbody></table></div>
       </div>
-
-      <!-- FR Tab 3: FSN Detail -->
       <div class="fr-panel" id="fr-p3">
-        <div class="tbl-wrap">
-          <table><thead><tr>
-            <th onclick="sortFR(3,'FC')">FC</th>
-            <th onclick="sortFR(3,'vendor_full_name')">Vendor</th>
-            <th onclick="sortFR(3,'FSN')">FSN</th>
-            <th onclick="sortFR(3,'product_title')">Product</th>
-            <th onclick="sortFR(3,'QFR')">QFR</th>
-            <th onclick="sortFR(3,'LFR')">LFR</th>
-            <th onclick="sortFR(3,'QFR_Bucket')">QFR Bucket</th>
-            <th onclick="sortFR(3,'LFR_Bucket')">LFR Bucket</th>
-            <th onclick="sortFR(3,'Instock_View')">Instock View</th>
-            <th onclick="sortFR(3,'DRR')">DRR</th>
-            <th onclick="sortFR(3,'ATP')">ATP</th>
-          </tr></thead><tbody id="fr-fsn-body"></tbody></table>
+        <div class="tbl-wrap"><table><thead><tr>
+          <th onclick="sortFR(3,'warehouse_id')">FC</th>
+          <th onclick="sortFR(3,'vendor_full_name')">Vendor</th>
+          <th onclick="sortFR(3,'FSN')">FSN</th>
+          <th onclick="sortFR(3,'product_title')">Product</th>
+          <th onclick="sortFR(3,'QFR')">QFR</th>
+          <th onclick="sortFR(3,'LFR')">LFR</th>
+          <th onclick="sortFR(3,'QFR_Bucket')">QFR Bucket</th>
+          <th onclick="sortFR(3,'LFR_Bucket')">LFR Bucket</th>
+          <th onclick="sortFR(3,'final_remarko')">Instock View</th>
+          <th onclick="sortFR(3,'DRR')">DRR</th>
+          <th onclick="sortFR(3,'atp')">ATP</th>
+        </tr></thead><tbody id="fr-fsn-body"></tbody></table></div>
+        <div class="pagination"><div id="fr-fsn-info"></div><div class="pg-btns" id="fr-fsn-pgs"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES VIEW -->
+  <div class="section-title">📊 Sales View</div>
+  <div class="card">
+    <div class="card-header" style="padding-bottom:0;border-bottom:none;">
+      <div class="card-title">Sales Analysis</div>
+      <div class="card-controls">
+        <div class="fg">
+          <label>FC Filter</label>
+          <div class="ms-wrap">
+            <button class="ms-btn" id="sales-fc-btn" onclick="toggleMS('sales-fc-dd')">All FCs ▾</button>
+            <div class="ms-dropdown" id="sales-fc-dd"></div>
+          </div>
         </div>
-        <div class="pagination">
-          <div id="fr-fsn-info"></div><div class="pg-btns" id="fr-fsn-pgs"></div>
-        </div>
+        <div class="fg"><label>Vendor</label><select id="sales-vnd" onchange="renderSalesAll()" style="min-width:180px"><option value="">All Vendors</option></select></div>
+        <div class="fg"><label>Search FSN</label><input id="sales-fsn" placeholder="FSN or product..." oninput="renderSalesAll()" style="min-width:140px"/></div>
+      </div>
+    </div>
+    <div style="padding:0 16px;">
+      <div class="sales-tabs">
+        <div class="sales-tab active" onclick="switchSalesTab(0)">FC Level</div>
+        <div class="sales-tab" onclick="switchSalesTab(1)">FC × Vendor</div>
+        <div class="sales-tab" onclick="switchSalesTab(2)">FSN Detail</div>
+      </div>
+      <div class="sales-panel active" id="sales-p0">
+        <div class="tbl-wrap"><table><thead><tr>
+          <th onclick="sortSales(0,'warehouse_id')">FC</th>
+          <th onclick="sortSales(0,'skus')">SKUs</th>
+          <th onclick="sortSales(0,'l10')">L10 Sales</th>
+          <th onclick="sortSales(0,'l7')">L7 Sales</th>
+          <th onclick="sortSales(0,'d1')">D-1 Sales</th>
+          <th onclick="sortSales(0,'avgDaily')">Avg Daily (L10)</th>
+          <th>Trend</th>
+        </tr></thead><tbody id="sales-fc-body"></tbody>
+        <tfoot id="sales-fc-foot"></tfoot></table></div>
+      </div>
+      <div class="sales-panel" id="sales-p1">
+        <div class="tbl-wrap"><table><thead><tr>
+          <th onclick="sortSales(1,'warehouse_id')">FC</th>
+          <th onclick="sortSales(1,'vendor')">Vendor</th>
+          <th onclick="sortSales(1,'skus')">SKUs</th>
+          <th onclick="sortSales(1,'l10')">L10 Sales</th>
+          <th onclick="sortSales(1,'l7')">L7 Sales</th>
+          <th onclick="sortSales(1,'d1')">D-1 Sales</th>
+          <th onclick="sortSales(1,'avgDaily')">Avg Daily</th>
+          <th>Trend</th>
+        </tr></thead><tbody id="sales-fcvnd-body"></tbody></table></div>
+      </div>
+      <div class="sales-panel" id="sales-p2">
+        <div class="tbl-wrap"><table><thead><tr>
+          <th onclick="sortSales(2,'warehouse_id')">FC</th>
+          <th onclick="sortSales(2,'vendor_full_name')">Vendor</th>
+          <th onclick="sortSales(2,'FSN')">FSN</th>
+          <th onclick="sortSales(2,'product_title')">Product</th>
+          <th onclick="sortSales(2,'L10 sales')">L10 Sales</th>
+          <th onclick="sortSales(2,'L7 sales')">L7 Sales</th>
+          <th onclick="sortSales(2,'D-1 sales')">D-1 Sales</th>
+          <th onclick="sortSales(2,'atp')">ATP</th>
+          <th onclick="sortSales(2,'DRR')">DRR</th>
+          <th onclick="sortSales(2,'final_remarko')">Status</th>
+        </tr></thead><tbody id="sales-fsn-body"></tbody></table></div>
+        <div class="pagination"><div id="sales-fsn-info"></div><div class="pg-btns" id="sales-fsn-pgs"></div></div>
       </div>
     </div>
   </div>
@@ -355,173 +428,158 @@ tfoot td{padding:7px 12px;}
 
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/flipkart.com/s/AKfycbz6Eofn85iwL4O19LUvB6DUnhd50oyNMVqxZYZ5I7PGTf1_7VEd8efjLpHJMBoJQGMB5g/exec';
-const NUM_COLS = new Set(['ATP','DRR','doh_days','open_po_count','ovr_intransit_qty','Rank','QFR','LFR']);
+const NUM_COLS = new Set(['atp','DRR','dohfinal','po_count','Open PO qty','Rank','QFR','LFR',
+  'atpd1','atpd2','atpd3','atpd4','atpd5','ts0','ts1','ts2','ts3','ts4','ts5',
+  'Future scheduled qty','L10 sales','L7 sales','D-1 sales','quantity']);
 
-// ── CSV PARSER (handles quoted fields) ────────────────────────────────────────
-function parseCSV(text) {
-  const lines = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
-  if (lines.length < 2) return [];
-  const headers = splitCSVLine(lines[0]);
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-    const vals = splitCSVLine(line);
-    const obj = {};
-    headers.forEach((h, j) => {
-      const raw = vals[j] !== undefined ? vals[j] : '';
-      if (NUM_COLS.has(h)) {
-        const n = parseFloat(raw);
-        obj[h] = isNaN(n) ? null : n;
-      } else {
-        obj[h] = raw === 'NA' || raw === '' ? (NUM_COLS.has(h) ? null : '') : raw;
-      }
+// ── CSV PARSER ────────────────────────────────────────────────────────────────
+function parseCSV(text){
+  const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  if(lines.length<2)return[];
+  const headers=splitCSVLine(lines[0]);
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    const line=lines[i].trim();if(!line)continue;
+    const vals=splitCSVLine(line);
+    const obj={};
+    headers.forEach((h,j)=>{
+      const raw=vals[j]!==undefined?vals[j]:'';
+      if(NUM_COLS.has(h)){const n=parseFloat(raw);obj[h]=isNaN(n)?null:n;}
+      else{obj[h]=(raw==='NA'||raw==='')?'':raw;}
     });
     rows.push(obj);
   }
   return rows;
 }
-function splitCSVLine(line) {
-  const result = []; let cur = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c === '"') { if (inQ && line[i+1]==='"'){cur+='"';i++;} else inQ=!inQ; }
-    else if (c === ',' && !inQ) { result.push(cur); cur=''; }
-    else cur += c;
+function splitCSVLine(line){
+  const result=[];let cur='';let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(c===','&&!inQ){result.push(cur);cur='';}
+    else cur+=c;
   }
-  result.push(cur);
-  return result;
+  result.push(cur);return result;
 }
-
-function setProgress(pct, msg) {
-  document.getElementById('loading-bar').style.width = pct + '%';
-  if (msg) document.getElementById('loading-msg').textContent = msg;
+function setProgress(pct,msg){
+  document.getElementById('loading-bar').style.width=pct+'%';
+  if(msg)document.getElementById('loading-msg').textContent=msg;
 }
-function hideLoader() {
-  document.getElementById('loading-overlay').style.display = 'none';
-}
-function showError(msg) {
-  const el = document.getElementById('loading-overlay');
-  el.innerHTML = `<div style="font-size:28px">⚠️</div><div style="font-size:16px;font-weight:700;color:#ffcc80">Failed to load data</div><div style="font-size:13px;max-width:400px;text-align:center;opacity:.9">${msg}</div><button onclick="location.reload()" style="margin-top:12px;padding:8px 20px;border-radius:6px;border:none;background:#fb641b;color:#fff;font-weight:700;cursor:pointer">Retry</button>`;
+function hideLoader(){document.getElementById('loading-overlay').style.display='none';}
+function showError(msg){
+  document.getElementById('loading-overlay').innerHTML=`<div style="font-size:28px">⚠️</div><div style="font-size:16px;font-weight:700;color:#ffcc80">Failed to load data</div><div style="font-size:13px;max-width:400px;text-align:center;opacity:.9">${msg}</div><button onclick="location.reload()" style="margin-top:12px;padding:8px 20px;border-radius:6px;border:none;background:#fb641b;color:#fff;font-weight:700;cursor:pointer">Retry</button>`;
 }
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let rawData = [];
-let filteredData = [];
-let activeFCFilter = '', activeVendorFilter = '', activeCatFilter = '';
-let vndFCSelected = [], frFCSelected = [];
-let riskPage = 1, frFsnPage = 1;
-const PS = 50;
+let rawData=[];let filteredData=[];
+let activeFCFilter='',activeVendorFilter='',activeCatFilter='';
+let vndFCSelected=[],frFCSelected=[],salesFCSelected=[];
+let riskPage=1,frFsnPage=1,salesFsnPage=1;
+const PS=50;
 
-const SC = {'Instock':'#00897b','No PO':'#e53935','Scheduled <5 days':'#fb8c00','Scheduled >5 days':'#f9a825','Pending to schedule':'#90a4ae'};
-const IBADGE = {'Instock':'b-instock','No PO':'b-nopo','Scheduled <5 days':'b-sch5','Scheduled >5 days':'b-sch5p','Pending to schedule':'b-pending'};
-const FBADGE = {'No Issues':'b-noissues','NR-30':'b-nr30','New PO':'b-newpo','No PO':'b-nopo','QFR Gap':'b-frg','LFR Gap':'b-frg','QFR Gap (<=10%)':'b-frgl','LFR Gap (<=10%)':'b-frgl'};
-const DBADGE = {'oos':'b-oos','6_doh_risk':'b-sch5','10_doh_risk':'b-sch5p','green':'b-instock'};
-const frSort = [{col:'FC',dir:1},{col:'vendor',dir:1},{col:'FC',dir:1},{col:'QFR',dir:-1}];
-let riskSort = {col:'DRR',dir:-1};
+const SC_MAP={'Instock':'#00897b','No PO':'#e53935','Scheduled <5 days':'#fb8c00','Scheduled >5 days':'#f9a825','Pending to schedule':'#90a4ae'};
+const IBADGE={'Instock':'b-instock','No PO':'b-nopo','Scheduled <5 days':'b-sch5','Scheduled >5 days':'b-sch5p','Pending to schedule':'b-pending'};
+const FBADGE={'No Issues':'b-noissues','NR-30':'b-nr30','New PO':'b-newpo','No PO':'b-nopo','QFR Gap':'b-frg','LFR Gap':'b-frg','QFR Gap (<=10%)':'b-frgl','LFR Gap (<=10%)':'b-frgl'};
+const DBADGE={'oos':'b-oos','6_doh_risk':'b-sch5','10_doh_risk':'b-sch5p','green':'b-instock'};
+const frSort=[{col:'warehouse_id',dir:1},{col:'vendor',dir:1},{col:'warehouse_id',dir:1},{col:'QFR',dir:-1}];
+const salesSort=[{col:'l10',dir:-1},{col:'l10',dir:-1},{col:'L10 sales',dir:-1}];
+let riskSort={col:'DRR',dir:-1};
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-window.onload = async function(){
-  try {
-    setProgress(10, 'Connecting to Google Drive…');
-    const res = await fetch(APPS_SCRIPT_URL);
-    setProgress(50, 'Parsing data…');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    let parsed;
-    try { parsed = JSON.parse(text); } catch(e){ parsed = null; }
-    if (parsed && parsed.error) throw new Error(parsed.error);
-    rawData = parseCSV(text);
-    if (rawData.length === 0) throw new Error('No rows found in today\'s file');
-    setProgress(80, `Loaded ${rawData.length.toLocaleString()} rows`);
-    document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-    populateFilters();
-    applyFilters();
-    checkAlerts();
-    setProgress(100, 'Done');
-    setTimeout(hideLoader, 400);
-  } catch(err) {
-    showError(err.message || String(err));
-  }
+window.onload=async function(){
+  try{
+    setProgress(10,'Connecting to Google Drive…');
+    const res=await fetch(APPS_SCRIPT_URL);
+    setProgress(50,'Parsing data…');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const text=await res.text();
+    let parsed;try{parsed=JSON.parse(text);}catch(e){parsed=null;}
+    if(parsed&&parsed.error)throw new Error(parsed.error);
+    rawData=parseCSV(text);
+    if(rawData.length===0)throw new Error("No rows found in today's file");
+    setProgress(80,`Loaded ${rawData.length.toLocaleString()} rows`);
+    document.getElementById('lastUpdated').textContent=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    populateFilters();applyFilters();checkAlerts();
+    setProgress(100,'Done');setTimeout(hideLoader,400);
+  }catch(err){showError(err.message||String(err));}
 };
 
 function checkAlerts(){
   const oos=rawData.filter(r=>r.doh_bucket==='oos').length;
-  const nopo=rawData.filter(r=>r.Instock_View==='No PO').length;
+  const nopo=rawData.filter(r=>r.final_remarko==='No PO').length;
   if(oos>0||nopo>0){const el=document.getElementById('alertBar');el.textContent=`🚨 ${oos} OOS SKUs | ${nopo} SKUs with No PO — immediate action required`;el.style.display='block';}
 }
 
 function populateFilters(){
-  const fields={'f-fc':'FC','f-bu':'BU','f-brand':'brand','f-vendor':'vendor_full_name','f-instock':'Instock_View','f-doh':'doh_bucket'};
+  const fields={'f-fc':'warehouse_id','f-bu':'BU','f-sc':'SC','f-vendor':'vendor_full_name','f-instock':'final_remarko','f-doh':'doh_bucket'};
   Object.entries(fields).forEach(([id,col])=>{
     const sel=document.getElementById(id);
     const vals=[...new Set(rawData.map(r=>r[col]).filter(Boolean))].sort();
     sel.innerHTML=`<option value="">All</option>`+vals.map(v=>`<option value="${v}">${v}</option>`).join('');
   });
-  const fcs=[...new Set(rawData.map(r=>r.FC).filter(Boolean))].sort();
+  const fcs=[...new Set(rawData.map(r=>r.warehouse_id).filter(Boolean))].sort();
   buildMS('vnd-fc-dd',fcs,'vnd-fc-btn','renderVendor','vnd');
-  buildMS('fr-fc-dd', fcs,'fr-fc-btn', 'renderFRAll','fr');
-  const frVndSel=document.getElementById('fr-vnd-search');
+  buildMS('fr-fc-dd', fcs,'fr-fc-btn','renderFRAll','fr');
+  buildMS('sales-fc-dd',fcs,'sales-fc-btn','renderSalesAll','sales');
+  // FR vendor select
+  const frVnd=document.getElementById('fr-vnd-search');
   const vendors=[...new Set(rawData.map(r=>r.vendor_full_name).filter(Boolean))].sort();
-  frVndSel.innerHTML=`<option value="">All Vendors</option>`+vendors.map(v=>`<option value="${v.replace(/"/g,'&quot;')}">${v}</option>`).join('');
+  frVnd.innerHTML=`<option value="">All Vendors</option>`+vendors.map(v=>`<option value="${v.replace(/"/g,'&quot;')}">${v}</option>`).join('');
+  // Sales vendor select
+  const sVnd=document.getElementById('sales-vnd');
+  sVnd.innerHTML=`<option value="">All Vendors</option>`+vendors.map(v=>`<option value="${v.replace(/"/g,'&quot;')}">${v}</option>`).join('');
 }
 
 function buildMS(ddId,opts,btnId,cb,key){
   const dd=document.getElementById(ddId);
   dd.innerHTML=opts.map(v=>`<label class="ms-item"><input type="checkbox" value="${v}" onchange="msChange('${ddId}','${btnId}','${cb}','${key}')"> ${v}</label>`).join('');
 }
-
 function msChange(ddId,btnId,cb,key){
   const dd=document.getElementById(ddId);
   const checks=[...dd.querySelectorAll('input:checked')].map(x=>x.value);
-  if(key==='vnd') vndFCSelected=checks;
-  else frFCSelected=checks;
+  if(key==='vnd')vndFCSelected=checks;
+  else if(key==='fr')frFCSelected=checks;
+  else salesFCSelected=checks;
   const btn=document.getElementById(btnId);
   btn.textContent=checks.length===0?'All FCs ▾':checks.length===1?checks[0]+' ▾':checks.length+' FCs ▾';
   window[cb]();
 }
-
 function toggleMS(id){document.getElementById(id).classList.toggle('open');}
-document.addEventListener('click',e=>{if(!e.target.closest('.ms-wrap')){document.querySelectorAll('.ms-dropdown').forEach(d=>d.classList.remove('open'));}});
-
-function toggleSection(id,btn){
-  const el=document.getElementById(id);
-  const collapsed=el.style.display==='none';
-  el.style.display=collapsed?'':'none';
-  btn.textContent=collapsed?'▲ Collapse':'▼ Expand';
-}
+document.addEventListener('click',e=>{if(!e.target.closest('.ms-wrap'))document.querySelectorAll('.ms-dropdown').forEach(d=>d.classList.remove('open'));});
+function toggleSection(id,btn){const el=document.getElementById(id);const c=el.style.display==='none';el.style.display=c?'':'none';btn.textContent=c?'▲ Collapse':'▼ Expand';}
 
 function applyFilters(){
   const fc=document.getElementById('f-fc').value;
   const bu=document.getElementById('f-bu').value;
-  const brand=document.getElementById('f-brand').value;
+  const sc=document.getElementById('f-sc').value;
   const vendor=document.getElementById('f-vendor').value;
   const instock=document.getElementById('f-instock').value;
   const doh=document.getElementById('f-doh').value;
   const search=document.getElementById('f-search').value.toLowerCase();
   filteredData=rawData.filter(r=>
-    (!fc||r.FC===fc)&&(!bu||r.BU===bu)&&(!brand||r.brand===brand)&&
-    (!vendor||r.vendor_full_name===vendor)&&(!instock||r.Instock_View===instock)&&
+    (!fc||r.warehouse_id===fc)&&(!bu||r.BU===bu)&&(!sc||r.SC===sc)&&
+    (!vendor||r.vendor_full_name===vendor)&&(!instock||r.final_remarko===instock)&&
     (!doh||r.doh_bucket===doh)&&
     (!search||String(r.FSN||'').toLowerCase().includes(search)||String(r.product_title||'').toLowerCase().includes(search))
   );
-  riskPage=1;
-  updateKPIs();renderFC();renderVendor();renderCat();renderRisk();renderFRAll();
+  riskPage=1;frFsnPage=1;salesFsnPage=1;
+  updateKPIs();renderProjection();renderFC();renderVendor();renderCat();renderRisk();renderFRAll();renderSalesAll();
 }
 
 function clearFilters(){
-  ['f-fc','f-bu','f-brand','f-vendor','f-instock','f-doh'].forEach(id=>document.getElementById(id).value='');
+  ['f-fc','f-bu','f-sc','f-vendor','f-instock','f-doh'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-search').value='';
-  activeFCFilter='';activeVendorFilter='';activeCatFilter='';
-  applyFilters();
+  activeFCFilter='';activeVendorFilter='';activeCatFilter='';applyFilters();
 }
 
 // ── KPIs ──────────────────────────────────────────────────────────────────────
 function updateKPIs(){
-  const total=filteredData.length;
-  const pct=v=>total?(v/total*100).toFixed(1)+'%':'0%';
-  const cnt=v=>filteredData.filter(r=>r.Instock_View===v).length;
-  const instock=cnt('Instock'),nopo=cnt('No PO'),sch=cnt('Scheduled <5 days')+cnt('Scheduled >5 days'),pend=cnt('Pending to schedule'),oos=filteredData.filter(r=>r.doh_bucket==='oos').length;
+  const total=filteredData.length;const pct=v=>total?(v/total*100).toFixed(1)+'%':'0%';
+  const cnt=v=>filteredData.filter(r=>r.final_remarko===v).length;
+  const instock=cnt('Instock'),nopo=cnt('No PO');
+  const sch=cnt('Scheduled <5 days')+cnt('Scheduled >5 days');
+  const pend=cnt('Pending to schedule');
+  const oos=filteredData.filter(r=>r.doh_bucket==='oos').length;
   document.getElementById('k-total').textContent=total.toLocaleString();
   document.getElementById('k-instock').textContent=instock.toLocaleString();
   document.getElementById('k-oos').textContent=oos.toLocaleString();
@@ -535,69 +593,79 @@ function updateKPIs(){
   document.getElementById('k-pend-p').textContent=pct(pend);
 }
 
+// ── ATP PROJECTION ────────────────────────────────────────────────────────────
+function projPctColor(p){return p>=85?'#00897b':p>=70?'#fb8c00':'#e53935';}
+function renderProjection(){
+  const data=filteredData;const total=data.length;if(!total)return;
+  const days=['Today','Day+1','Day+2','Day+3','Day+4','Day+5'];
+  const cols=['atp','atpd1','atpd2','atpd3','atpd4','atpd5'];
+  const tsCols=['ts0','ts1','ts2','ts3','ts4','ts5'];
+  // Summary cards
+  const cardsEl=document.getElementById('proj-cards');
+  cardsEl.innerHTML=cols.map((c,i)=>{
+    const instock=data.filter(r=>r[c]>0).length;
+    const pct=total?(instock/total*100):0;
+    const schQty=data.reduce((s,r)=>s+(r[tsCols[i]]||0),0);
+    return`<div class="proj-card">
+      <div class="proj-day">${days[i]}</div>
+      <div class="proj-pct" style="color:${projPctColor(pct)}">${pct.toFixed(1)}%</div>
+      <div class="proj-bar"><div class="proj-bar-fill" style="width:${pct}%;background:${projPctColor(pct)}"></div></div>
+      <div class="proj-qty">${instock.toLocaleString()}/${total.toLocaleString()} instock${schQty>0?` · +${schQty.toLocaleString()} arr.`:''}</div>
+    </div>`;
+  }).join('');
+  // FC breakdown
+  const fcs=[...new Set(data.map(r=>r.warehouse_id).filter(Boolean))].sort();
+  document.getElementById('proj-fc-body').innerHTML=fcs.map(fc=>{
+    const d=data.filter(r=>r.warehouse_id===fc);const t=d.length;
+    const pcts=cols.map(c=>t?d.filter(r=>r[c]>0).length/t*100:0);
+    const futSch=d.reduce((s,r)=>s+(r['Future scheduled qty']||0),0);
+    function cell(p,i){return`<td style="font-weight:700;color:${projPctColor(p)};background:${i===0?'#f0fdf4':''}">${p.toFixed(1)}%</td>`;}
+    return`<tr><td><b>${fc}</b></td><td>${t}</td>${pcts.map((p,i)=>cell(p,i)).join('')}<td>${futSch>0?futSch.toLocaleString():'-'}</td></tr>`;
+  }).join('');
+}
+
 // ── SUMMARY HELPERS ───────────────────────────────────────────────────────────
 const STATUS=['Instock','No PO','Scheduled <5 days','Scheduled >5 days','Pending to schedule'];
 function buildSummaryRows(data,groupKey){
   const groups=[...new Set(data.map(r=>r[groupKey]).filter(Boolean))].sort();
   return groups.map(g=>{
-    const d=data.filter(r=>r[groupKey]===g);
-    const total=d.length;
-    const counts={};STATUS.forEach(s=>counts[s]=d.filter(r=>r.Instock_View===s).length);
+    const d=data.filter(r=>r[groupKey]===g);const total=d.length;
+    const counts={};STATUS.forEach(s=>counts[s]=d.filter(r=>r.final_remarko===s).length);
     const atrisk=(counts['No PO']||0)+d.filter(r=>r.doh_bucket==='oos').length;
     return{key:g,total,...counts,pct_instock:total?counts['Instock']/total:0,pct_atrisk:total?atrisk/total:0};
   }).filter(r=>r.total>0);
 }
-function miniBar(row){
-  const t=row.total||1;
-  return `<div class="mini-bar">${STATUS.map(s=>`<div class="mini-seg" style="width:${(row[s]||0)/t*100}%;background:${SC[s]}"></div>`).join('')}</div>`;
-}
+function miniBar(row){const t=row.total||1;return`<div class="mini-bar">${STATUS.map(s=>`<div class="mini-seg" style="width:${(row[s]||0)/t*100}%;background:${SC_MAP[s]}"></div>`).join('')}</div>`;}
 function pctColor(p){return p>=0.8?'#00897b':p>=0.5?'#fb8c00':'#e53935';}
 function pctBadge(row){const p=(row.pct_instock*100).toFixed(1);return`<span style="font-weight:700;color:${pctColor(row.pct_instock)}">${p}%</span>`;}
-function sortRows(rows,sc,sd){
-  return rows.sort((a,b)=>{
-    const av=a[sc]!==undefined?a[sc]:'';const bv=b[sc]!==undefined?b[sc]:'';
-    return(av<bv?-1:av>bv?1:0)*sd;
-  });
-}
-function totRow(rows){
-  const t={total:rows.reduce((s,r)=>s+r.total,0)};
-  STATUS.forEach(s=>t[s]=rows.reduce((sum,r)=>sum+(r[s]||0),0));
-  t.pct_instock=t.total?t['Instock']/t.total:0;
-  return t;
-}
+function sortRows(rows,sc,sd){return rows.sort((a,b)=>{const av=a[sc]!==undefined?a[sc]:'';const bv=b[sc]!==undefined?b[sc]:'';return(av<bv?-1:av>bv?1:0)*sd;});}
+function totRow(rows){const t={total:rows.reduce((s,r)=>s+r.total,0)};STATUS.forEach(s=>t[s]=rows.reduce((sum,r)=>sum+(r[s]||0),0));t.pct_instock=t.total?t['Instock']/t.total:0;return t;}
 
 // ── FC TABLE ──────────────────────────────────────────────────────────────────
 function renderFC(){
-  const sc=document.getElementById('fc-sort-col').value;
-  const sd=document.getElementById('fc-sort-dir').value==='asc'?1:-1;
-  const rows=sortRows(buildSummaryRows(filteredData,'FC'),sc,sd);
+  const sc=document.getElementById('fc-sort-col').value;const sd=document.getElementById('fc-sort-dir').value==='asc'?1:-1;
+  const rows=sortRows(buildSummaryRows(filteredData,'warehouse_id'),sc,sd);
   document.getElementById('fc-body').innerHTML=rows.map(r=>`<tr onclick="toggleFCFilter('${r.key}')" class="${activeFCFilter===r.key?'row-active':''}">
     <td><b>${r.key}</b></td><td>${r.total.toLocaleString()}</td>
-    ${STATUS.map(s=>`<td style="color:${SC[s]}">${(r[s]||0).toLocaleString()}</td>`).join('')}
+    ${STATUS.map(s=>`<td style="color:${SC_MAP[s]}">${(r[s]||0).toLocaleString()}</td>`).join('')}
     <td>${pctBadge(r)}</td><td>${miniBar(r)}</td></tr>`).join('');
   const tr=totRow(rows);
   document.getElementById('fc-foot').innerHTML=`<tr><td><b>TOTAL</b></td><td>${tr.total.toLocaleString()}</td>${STATUS.map(s=>`<td>${(tr[s]||0).toLocaleString()}</td>`).join('')}<td>${(tr.pct_instock*100).toFixed(1)}%</td><td></td></tr>`;
   document.getElementById('fc-clr').style.display=activeFCFilter?'inline':'none';
 }
-function toggleFCFilter(fc){
-  if(activeFCFilter===fc){activeFCFilter='';document.getElementById('f-fc').value='';}
-  else{activeFCFilter=fc;document.getElementById('f-fc').value=fc;}
-  applyFilters();
-}
+function toggleFCFilter(fc){if(activeFCFilter===fc){activeFCFilter='';document.getElementById('f-fc').value='';}else{activeFCFilter=fc;document.getElementById('f-fc').value=fc;}applyFilters();}
 function clearFCFilter(){activeFCFilter='';document.getElementById('f-fc').value='';applyFilters();}
 
 // ── VENDOR TABLE ──────────────────────────────────────────────────────────────
 function renderVendor(){
-  const sc=document.getElementById('vnd-sort-col').value;
-  const sd=document.getElementById('vnd-sort-dir').value==='asc'?1:-1;
-  const src=vndFCSelected.length?filteredData.filter(r=>vndFCSelected.includes(r.FC)):filteredData;
+  const sc=document.getElementById('vnd-sort-col').value;const sd=document.getElementById('vnd-sort-dir').value==='asc'?1:-1;
+  const src=vndFCSelected.length?filteredData.filter(r=>vndFCSelected.includes(r.warehouse_id)):filteredData;
   const rows=sortRows(buildSummaryRows(src,'vendor_full_name'),sc,sd);
   document.getElementById('vnd-body').innerHTML=rows.map(r=>{
-    const safeKey=r.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    return`<tr onclick="toggleVendorFilter('${safeKey}')" class="${activeVendorFilter===r.key?'row-active':''}">
-      <td title="${r.key}">${r.key.length>32?r.key.slice(0,32)+'…':r.key}</td>
-      <td>${r.total.toLocaleString()}</td>
-      ${STATUS.map(s=>`<td style="color:${SC[s]}">${(r[s]||0).toLocaleString()}</td>`).join('')}
+    const sk=r.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return`<tr onclick="toggleVendorFilter('${sk}')" class="${activeVendorFilter===r.key?'row-active':''}">
+      <td title="${r.key}">${r.key.length>32?r.key.slice(0,32)+'…':r.key}</td><td>${r.total.toLocaleString()}</td>
+      ${STATUS.map(s=>`<td style="color:${SC_MAP[s]}">${(r[s]||0).toLocaleString()}</td>`).join('')}
       <td>${pctBadge(r)}</td>
       <td><span style="font-weight:700;color:${r.pct_atrisk>0.3?'#e53935':r.pct_atrisk>0.1?'#fb8c00':'#43a047'}">${(r.pct_atrisk*100).toFixed(1)}%</span></td>
       <td>${miniBar(r)}</td></tr>`;
@@ -606,90 +674,63 @@ function renderVendor(){
   document.getElementById('vnd-foot').innerHTML=`<tr><td><b>TOTAL</b></td><td>${tr.total.toLocaleString()}</td>${STATUS.map(s=>`<td>${(tr[s]||0).toLocaleString()}</td>`).join('')}<td>${(tr.pct_instock*100).toFixed(1)}%</td><td>-</td><td></td></tr>`;
   document.getElementById('vnd-clr').style.display=activeVendorFilter?'inline':'none';
 }
-function toggleVendorFilter(v){
-  if(activeVendorFilter===v){activeVendorFilter='';document.getElementById('f-vendor').value='';}
-  else{activeVendorFilter=v;document.getElementById('f-vendor').value=v;}
-  applyFilters();
-}
+function toggleVendorFilter(v){if(activeVendorFilter===v){activeVendorFilter='';document.getElementById('f-vendor').value='';}else{activeVendorFilter=v;document.getElementById('f-vendor').value=v;}applyFilters();}
 function clearVendorFilter(){activeVendorFilter='';document.getElementById('f-vendor').value='';applyFilters();}
 
 // ── CATEGORY TABLE ────────────────────────────────────────────────────────────
 function renderCat(){
-  const sc=document.getElementById('cat-sort-col').value;
-  const sd=document.getElementById('cat-sort-dir').value==='asc'?1:-1;
-  const rows=sortRows(buildSummaryRows(filteredData,'L1'),sc,sd);
+  const sc=document.getElementById('cat-sort-col').value;const sd=document.getElementById('cat-sort-dir').value==='asc'?1:-1;
+  const rows=sortRows(buildSummaryRows(filteredData,'SC'),sc,sd);
   document.getElementById('cat-body').innerHTML=rows.map(r=>{
-    const safeKey=r.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    return`<tr onclick="toggleCatFilter('${safeKey}')" class="${activeCatFilter===r.key?'row-active':''}">
+    const sk=r.key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return`<tr onclick="toggleCatFilter('${sk}')" class="${activeCatFilter===r.key?'row-active':''}">
       <td><b>${r.key}</b></td><td>${r.total.toLocaleString()}</td>
-      ${STATUS.map(s=>`<td style="color:${SC[s]}">${(r[s]||0).toLocaleString()}</td>`).join('')}
+      ${STATUS.map(s=>`<td style="color:${SC_MAP[s]}">${(r[s]||0).toLocaleString()}</td>`).join('')}
       <td>${pctBadge(r)}</td><td>${miniBar(r)}</td></tr>`;
   }).join('');
   const tr=totRow(rows);
   document.getElementById('cat-foot').innerHTML=`<tr><td><b>TOTAL</b></td><td>${tr.total.toLocaleString()}</td>${STATUS.map(s=>`<td>${(tr[s]||0).toLocaleString()}</td>`).join('')}<td>${(tr.pct_instock*100).toFixed(1)}%</td><td></td></tr>`;
   document.getElementById('cat-clr').style.display=activeCatFilter?'inline':'none';
 }
-function toggleCatFilter(c){
-  if(activeCatFilter===c){activeCatFilter='';}
-  else{activeCatFilter=c;}
-  applyFilters();
-}
+function toggleCatFilter(c){if(activeCatFilter===c){activeCatFilter='';}else{activeCatFilter=c;}applyFilters();}
 function clearCatFilter(){activeCatFilter='';applyFilters();}
 
 // ── AT-RISK TABLE ─────────────────────────────────────────────────────────────
+function frPct(v){if(v===null||v===undefined||isNaN(v))return'-';return(v*100).toFixed(1)+'%';}
 function renderRisk(){
-  let data=filteredData.filter(r=>r.doh_bucket==='oos'||r.Instock_View==='No PO');
-  data=[...data].sort((a,b)=>{
-    const av=parseFloat(a[riskSort.col])||0;const bv=parseFloat(b[riskSort.col])||0;
-    return(av<bv?-1:av>bv?1:0)*riskSort.dir;
-  });
+  let data=filteredData.filter(r=>r.doh_bucket==='oos'||r.final_remarko==='No PO');
+  data=[...data].sort((a,b)=>{const av=parseFloat(a[riskSort.col])||0;const bv=parseFloat(b[riskSort.col])||0;return(av<bv?-1:av>bv?1:0)*riskSort.dir;});
   document.getElementById('risk-meta').textContent=data.length.toLocaleString()+' at-risk SKUs';
   const start=(riskPage-1)*PS;const page=data.slice(start,start+PS);
   document.getElementById('risk-body').innerHTML=page.map(r=>`<tr>
-    <td><b>${r.FC||''}</b></td>
+    <td><b>${r.warehouse_id||''}</b></td>
     <td title="${r.vendor_full_name||''}">${String(r.vendor_full_name||'').slice(0,25)}</td>
     <td style="font-family:monospace;font-size:11px">${r.FSN||''}</td>
     <td title="${r.product_title||''}">${String(r.product_title||'').slice(0,28)}</td>
     <td>${r.BU||''}</td>
     <td style="text-align:right;font-weight:700;color:#e53935">${parseFloat(r.DRR||0).toFixed(1)}</td>
-    <td style="text-align:right">${parseFloat(r.ATP||0).toLocaleString()}</td>
-    <td style="text-align:right">${r.doh_days?parseFloat(r.doh_days).toFixed(1):'-'}</td>
+    <td style="text-align:right">${r.atp!==null?parseFloat(r.atp).toLocaleString():'-'}</td>
+    <td style="text-align:right">${r.dohfinal!==null?parseFloat(r.dohfinal).toFixed(1):'-'}</td>
     <td><span class="badge ${DBADGE[r.doh_bucket]||''}">${r.doh_bucket||''}</span></td>
-    <td><span class="badge ${IBADGE[r.Instock_View]||''}">${r.Instock_View||''}</span></td>
-    <td>${r.Sch_Date&&r.Sch_Date!=='NA'?r.Sch_Date:'-'}</td>
-    <td>${r.Latest_PO_Date||'-'}</td>
-    <td>${r.Latest_PO_Expiry||'-'}</td>
-    <td>${r.PO_Remark||'-'}</td>
+    <td><span class="badge ${IBADGE[r.final_remarko]||''}">${r.final_remarko||''}</span></td>
+    <td>${r.min_exp_del_date||'-'}</td>
+    <td>${r.min_expiry_date_po||'-'}</td>
     <td style="font-weight:700;color:${r.QFR>=0.85?'#00897b':r.QFR<0.1?'#e53935':'#fb8c00'}">${frPct(r.QFR)}</td>
     <td style="font-weight:700;color:${r.LFR>=0.85?'#00897b':r.LFR<0.1?'#e53935':'#fb8c00'}">${frPct(r.LFR)}</td>
+    <td>${r.kam||'-'}</td>
   </tr>`).join('');
   renderPagination('risk-info','risk-pgs',data.length,riskPage,p=>{riskPage=p;renderRisk();});
 }
-function sortRisk(col){
-  if(riskSort.col===col)riskSort.dir*=-1;else{riskSort.col=col;riskSort.dir=-1;}
-  riskPage=1;renderRisk();
-}
+function sortRisk(col){if(riskSort.col===col)riskSort.dir*=-1;else{riskSort.col=col;riskSort.dir=-1;}riskPage=1;renderRisk();}
 
 // ── FR VIEWS ──────────────────────────────────────────────────────────────────
 let activeFRTab=0;
-function switchFRTab(i){
-  activeFRTab=i;
-  document.querySelectorAll('.fr-tab').forEach((t,j)=>t.classList.toggle('active',i===j));
-  document.querySelectorAll('.fr-panel').forEach((p,j)=>p.classList.toggle('active',i===j));
-}
-
+function switchFRTab(i){activeFRTab=i;document.querySelectorAll('.fr-tab').forEach((t,j)=>t.classList.toggle('active',i===j));document.querySelectorAll('.fr-panel').forEach((p,j)=>p.classList.toggle('active',i===j));}
 function getFRData(){
-  const fcs=frFCSelected;
-  const fsn=document.getElementById('fr-fsn-search').value.toLowerCase();
+  const fcs=frFCSelected;const fsn=document.getElementById('fr-fsn-search').value.toLowerCase();
   const vnd=document.getElementById('fr-vnd-search').value;
-  return rawData.filter(r=>
-    (!fcs.length||fcs.includes(r.FC))&&
-    (!fsn||String(r.FSN||'').toLowerCase().includes(fsn)||String(r.product_title||'').toLowerCase().includes(fsn))&&
-    (!vnd||r.vendor_full_name===vnd)
-  );
+  return rawData.filter(r=>(!fcs.length||fcs.includes(r.warehouse_id))&&(!fsn||String(r.FSN||'').toLowerCase().includes(fsn)||String(r.product_title||'').toLowerCase().includes(fsn))&&(!vnd||r.vendor_full_name===vnd));
 }
-
-function frPct(v){if(v===null||v===undefined||isNaN(v))return'-';return(v*100).toFixed(1)+'%';}
 function frAvg(arr,col){const v=arr.filter(r=>r[col]!==null&&r[col]!==undefined&&!isNaN(r[col]));return v.length?v.reduce((s,r)=>s+r[col],0)/v.length:null;}
 function frBucketCounts(arr){
   const res={'No Issues':0,'NR-30':0,'New PO':0,'No PO':0,'FR Gap':0};
@@ -699,128 +740,145 @@ function frBucketCounts(arr){
     if(r.QFR_Bucket==='New PO'||r.LFR_Bucket==='New PO')res['New PO']++;
     if(r.QFR_Bucket==='No PO'||r.LFR_Bucket==='No PO')res['No PO']++;
     if((r.QFR_Bucket||'').includes('Gap')||(r.LFR_Bucket||'').includes('Gap'))res['FR Gap']++;
-  });
-  return res;
+  });return res;
 }
-
 function renderFRAll(){renderFCTrend();renderFRVendor();renderFRFCVnd();renderFRFSN();}
-
+function frQColor(v){return v>=0.85?'#00897b':v!=null&&v<0.5?'#e53935':'#fb8c00';}
 function renderFCTrend(){
-  const data=getFRData();
-  const fcs=[...new Set(data.map(r=>r.FC).filter(Boolean))].sort();
-  let rows=fcs.map(fc=>{
-    const d=data.filter(r=>r.FC===fc);
-    const avgQ=frAvg(d,'QFR'),avgL=frAvg(d,'LFR');
-    const bc=frBucketCounts(d);
-    return{FC:fc,total:d.length,avgQ,avgL,...bc};
-  });
-  const sc=frSort[0].col,sd=frSort[0].dir;
-  rows.sort((a,b)=>{const av=a[sc]??'';const bv=b[sc]??'';return(av<bv?-1:av>bv?1:0)*sd;});
+  const data=getFRData();const fcs=[...new Set(data.map(r=>r.warehouse_id).filter(Boolean))].sort();
+  let rows=fcs.map(fc=>{const d=data.filter(r=>r.warehouse_id===fc);const avgQ=frAvg(d,'QFR'),avgL=frAvg(d,'LFR');const bc=frBucketCounts(d);return{FC:fc,total:d.length,avgQ,avgL,...bc};});
+  const s=frSort[0];rows.sort((a,b)=>{const av=a[s.col]??'';const bv=b[s.col]??'';return(av<bv?-1:av>bv?1:0)*s.dir;});
   document.getElementById('fr-fc-body').innerHTML=rows.map(r=>`<tr>
     <td><b>${r.FC}</b></td><td>${r.total}</td>
-    <td style="font-weight:700;color:${r.avgQ>=0.85?'#00897b':r.avgQ!=null&&r.avgQ<0.5?'#e53935':'#fb8c00'}">${frPct(r.avgQ)}</td>
-    <td style="font-weight:700;color:${r.avgL>=0.85?'#00897b':r.avgL!=null&&r.avgL<0.5?'#e53935':'#fb8c00'}">${frPct(r.avgL)}</td>
-    <td style="color:#00897b">${r['No Issues']||0}</td>
-    <td style="color:#880e4f">${r['NR-30']||0}</td>
-    <td style="color:#e65100">${r['FR Gap']||0}</td>
-    <td style="color:#0d47a1">${r['New PO']||0}</td>
+    <td style="font-weight:700;color:${frQColor(r.avgQ)}">${frPct(r.avgQ)}</td>
+    <td style="font-weight:700;color:${frQColor(r.avgL)}">${frPct(r.avgL)}</td>
+    <td style="color:#00897b">${r['No Issues']||0}</td><td style="color:#880e4f">${r['NR-30']||0}</td>
+    <td style="color:#e65100">${r['FR Gap']||0}</td><td style="color:#0d47a1">${r['New PO']||0}</td>
     <td style="color:#e53935">${r['No PO']||0}</td>
-    <td><div class="mini-bar" style="min-width:60px">
-      <div class="mini-seg" style="width:${r.avgQ!=null?r.avgQ*100:0}%;background:#00897b"></div>
-      <div class="mini-seg" style="width:${r.avgQ!=null?(1-r.avgQ)*100:100}%;background:#eee"></div>
-    </div></td>
+    <td><div class="mini-bar" style="min-width:60px"><div class="mini-seg" style="width:${r.avgQ!=null?r.avgQ*100:0}%;background:#00897b"></div><div class="mini-seg" style="width:${r.avgQ!=null?(1-r.avgQ)*100:100}%;background:#eee"></div></div></td>
   </tr>`).join('');
 }
-
 function renderFRVendor(){
-  const data=getFRData();
-  const vendors=[...new Set(data.map(r=>r.vendor_full_name).filter(Boolean))].sort();
-  let rows=vendors.map(v=>{
-    const d=data.filter(r=>r.vendor_full_name===v);
-    const avgQ=frAvg(d,'QFR'),avgL=frAvg(d,'LFR');
-    const bc=frBucketCounts(d);
-    return{vendor:v,total:d.length,avgQ,avgL,...bc};
-  });
-  const sc=frSort[1].col,sd=frSort[1].dir;
-  rows.sort((a,b)=>{const av=a[sc]??'';const bv=b[sc]??'';return(av<bv?-1:av>bv?1:0)*sd;});
+  const data=getFRData();const vendors=[...new Set(data.map(r=>r.vendor_full_name).filter(Boolean))].sort();
+  let rows=vendors.map(v=>{const d=data.filter(r=>r.vendor_full_name===v);const avgQ=frAvg(d,'QFR'),avgL=frAvg(d,'LFR');const bc=frBucketCounts(d);return{vendor:v,total:d.length,avgQ,avgL,...bc};});
+  const s=frSort[1];rows.sort((a,b)=>{const av=a[s.col]??'';const bv=b[s.col]??'';return(av<bv?-1:av>bv?1:0)*s.dir;});
   document.getElementById('fr-vnd-body').innerHTML=rows.map(r=>`<tr>
-    <td title="${r.vendor}">${r.vendor.length>32?r.vendor.slice(0,32)+'…':r.vendor}</td>
-    <td>${r.total}</td>
-    <td style="font-weight:700;color:${r.avgQ>=0.85?'#00897b':r.avgQ!=null&&r.avgQ<0.5?'#e53935':'#fb8c00'}">${frPct(r.avgQ)}</td>
-    <td style="font-weight:700;color:${r.avgL>=0.85?'#00897b':r.avgL!=null&&r.avgL<0.5?'#e53935':'#fb8c00'}">${frPct(r.avgL)}</td>
-    <td style="color:#00897b">${r['No Issues']||0}</td>
-    <td style="color:#880e4f">${r['NR-30']||0}</td>
-    <td style="color:#e65100">${r['FR Gap']||0}</td>
-    <td style="color:#0d47a1">${r['New PO']||0}</td>
+    <td title="${r.vendor}">${r.vendor.length>32?r.vendor.slice(0,32)+'…':r.vendor}</td><td>${r.total}</td>
+    <td style="font-weight:700;color:${frQColor(r.avgQ)}">${frPct(r.avgQ)}</td>
+    <td style="font-weight:700;color:${frQColor(r.avgL)}">${frPct(r.avgL)}</td>
+    <td style="color:#00897b">${r['No Issues']||0}</td><td style="color:#880e4f">${r['NR-30']||0}</td>
+    <td style="color:#e65100">${r['FR Gap']||0}</td><td style="color:#0d47a1">${r['New PO']||0}</td>
     <td style="color:#e53935">${r['No PO']||0}</td>
   </tr>`).join('');
 }
-
 function renderFRFCVnd(){
-  const data=getFRData();
-  let rows=[];
-  const pairs=[...new Set(data.map(r=>r.FC+'|||'+r.vendor_full_name))].filter(p=>p.includes('|||'));
-  pairs.forEach(p=>{
-    const idx=p.indexOf('|||');const fc=p.slice(0,idx);const v=p.slice(idx+3);
-    const d=data.filter(r=>r.FC===fc&&r.vendor_full_name===v);
-    const avgQ=frAvg(d,'QFR'),avgL=frAvg(d,'LFR');
-    const bc=frBucketCounts(d);
-    const topQ=bc['No Issues']>0?'No Issues':bc['FR Gap']>0?'FR Gap':bc['NR-30']>0?'NR-30':bc['New PO']>0?'New PO':'No PO';
-    const topL=topQ;
-    rows.push({FC:fc,vendor:v,total:d.length,avgQ,avgL,topQ,topL});
-  });
-  const sc=frSort[2].col,sd=frSort[2].dir;
-  rows.sort((a,b)=>{const av=a[sc]??'';const bv=b[sc]??'';return(av<bv?-1:av>bv?1:0)*sd;});
+  const data=getFRData();const pairs=[...new Set(data.map(r=>r.warehouse_id+'|||'+r.vendor_full_name))].filter(p=>p.includes('|||'));
+  let rows=pairs.map(p=>{const idx=p.indexOf('|||');const fc=p.slice(0,idx);const v=p.slice(idx+3);const d=data.filter(r=>r.warehouse_id===fc&&r.vendor_full_name===v);const avgQ=frAvg(d,'QFR'),avgL=frAvg(d,'LFR');const bc=frBucketCounts(d);const topQ=bc['No Issues']>0?'No Issues':bc['FR Gap']>0?'FR Gap':bc['NR-30']>0?'NR-30':bc['New PO']>0?'New PO':'No PO';return{FC:fc,vendor:v,total:d.length,avgQ,avgL,topQ};});
+  const s=frSort[2];rows.sort((a,b)=>{const av=a[s.col]??'';const bv=b[s.col]??'';return(av<bv?-1:av>bv?1:0)*s.dir;});
   document.getElementById('fr-fcvnd-body').innerHTML=rows.map(r=>`<tr>
-    <td><b>${r.FC}</b></td>
-    <td title="${r.vendor}">${r.vendor.length>28?r.vendor.slice(0,28)+'…':r.vendor}</td>
-    <td>${r.total}</td>
-    <td style="font-weight:700;color:${r.avgQ>=0.85?'#00897b':r.avgQ!=null&&r.avgQ<0.5?'#e53935':'#fb8c00'}">${frPct(r.avgQ)}</td>
-    <td style="font-weight:700;color:${r.avgL>=0.85?'#00897b':r.avgL!=null&&r.avgL<0.5?'#e53935':'#fb8c00'}">${frPct(r.avgL)}</td>
+    <td><b>${r.FC}</b></td><td title="${r.vendor}">${r.vendor.length>28?r.vendor.slice(0,28)+'…':r.vendor}</td><td>${r.total}</td>
+    <td style="font-weight:700;color:${frQColor(r.avgQ)}">${frPct(r.avgQ)}</td>
+    <td style="font-weight:700;color:${frQColor(r.avgL)}">${frPct(r.avgL)}</td>
     <td><span class="badge ${FBADGE[r.topQ]||''}">${r.topQ}</span></td>
-    <td><span class="badge ${FBADGE[r.topL]||''}">${r.topL}</span></td>
+    <td><span class="badge ${FBADGE[r.topQ]||''}">${r.topQ}</span></td>
   </tr>`).join('');
 }
-
 function renderFRFSN(){
-  const data=getFRData();
-  const sc=frSort[3].col,sd=frSort[3].dir;
-  const sorted=[...data].sort((a,b)=>{
-    const av=a[sc]!==null&&a[sc]!==undefined?parseFloat(a[sc]):a[sc]??'';
-    const bv=b[sc]!==null&&b[sc]!==undefined?parseFloat(b[sc]):b[sc]??'';
-    return(av<bv?-1:av>bv?1:0)*sd;
-  });
+  const data=getFRData();const s=frSort[3];
+  const sorted=[...data].sort((a,b)=>{const av=a[s.col]!==null&&a[s.col]!==undefined?parseFloat(a[s.col]):a[s.col]??'';const bv=b[s.col]!==null&&b[s.col]!==undefined?parseFloat(b[s.col]):b[s.col]??'';return(av<bv?-1:av>bv?1:0)*s.dir;});
   const start=(frFsnPage-1)*PS;const page=sorted.slice(start,start+PS);
   document.getElementById('fr-fsn-body').innerHTML=page.map(r=>`<tr>
-    <td><b>${r.FC||''}</b></td>
-    <td title="${r.vendor_full_name||''}">${String(r.vendor_full_name||'').slice(0,22)}</td>
+    <td><b>${r.warehouse_id||''}</b></td><td title="${r.vendor_full_name||''}">${String(r.vendor_full_name||'').slice(0,22)}</td>
     <td style="font-family:monospace;font-size:11px">${r.FSN||''}</td>
     <td title="${r.product_title||''}">${String(r.product_title||'').slice(0,28)}</td>
-    <td style="font-weight:700;color:${r.QFR>=0.85?'#00897b':r.QFR!=null&&r.QFR<0.1?'#e53935':'#fb8c00'}">${frPct(r.QFR)}</td>
-    <td style="font-weight:700;color:${r.LFR>=0.85?'#00897b':r.LFR!=null&&r.LFR<0.1?'#e53935':'#fb8c00'}">${frPct(r.LFR)}</td>
+    <td style="font-weight:700;color:${frQColor(r.QFR)}">${frPct(r.QFR)}</td>
+    <td style="font-weight:700;color:${frQColor(r.LFR)}">${frPct(r.LFR)}</td>
     <td><span class="badge ${FBADGE[r.QFR_Bucket]||''}">${r.QFR_Bucket||'-'}</span></td>
     <td><span class="badge ${FBADGE[r.LFR_Bucket]||''}">${r.LFR_Bucket||'-'}</span></td>
-    <td><span class="badge ${IBADGE[r.Instock_View]||''}">${r.Instock_View||''}</span></td>
+    <td><span class="badge ${IBADGE[r.final_remarko]||''}">${r.final_remarko||''}</span></td>
     <td style="text-align:right">${parseFloat(r.DRR||0).toFixed(1)}</td>
-    <td style="text-align:right">${parseFloat(r.ATP||0).toLocaleString()}</td>
+    <td style="text-align:right">${r.atp!==null?parseFloat(r.atp).toLocaleString():'-'}</td>
   </tr>`).join('');
   renderPagination('fr-fsn-info','fr-fsn-pgs',sorted.length,frFsnPage,p=>{frFsnPage=p;renderFRFSN();});
 }
+function sortFR(tab,col){if(frSort[tab].col===col)frSort[tab].dir*=-1;else{frSort[tab].col=col;frSort[tab].dir=1;}renderFRAll();}
 
-function sortFR(tab,col){
-  if(frSort[tab].col===col)frSort[tab].dir*=-1;else{frSort[tab].col=col;frSort[tab].dir=1;}
-  renderFRAll();
+// ── SALES VIEW ────────────────────────────────────────────────────────────────
+let activeSalesTab=0;
+function switchSalesTab(i){activeSalesTab=i;document.querySelectorAll('.sales-tab').forEach((t,j)=>t.classList.toggle('active',i===j));document.querySelectorAll('.sales-panel').forEach((p,j)=>p.classList.toggle('active',i===j));}
+function getSalesData(){
+  const fcs=salesFCSelected;const fsn=document.getElementById('sales-fsn').value.toLowerCase();
+  const vnd=document.getElementById('sales-vnd').value;
+  return filteredData.filter(r=>(!fcs.length||fcs.includes(r.warehouse_id))&&(!fsn||String(r.FSN||'').toLowerCase().includes(fsn)||String(r.product_title||'').toLowerCase().includes(fsn))&&(!vnd||r.vendor_full_name===vnd));
 }
+function trendArrow(l7,l10){
+  if(l7===null||l10===null||l10===0)return'<span class="trend-fl">—</span>';
+  const daily7=l7/7;const daily10=l10/10;
+  if(daily7>daily10*1.05)return'<span class="trend-up">▲ Growing</span>';
+  if(daily7<daily10*0.95)return'<span class="trend-dn">▼ Declining</span>';
+  return'<span class="trend-fl">→ Stable</span>';
+}
+function renderSalesAll(){renderSalesFC();renderSalesFCVnd();renderSalesFSN();}
+function renderSalesFC(){
+  const data=getSalesData();const fcs=[...new Set(data.map(r=>r.warehouse_id).filter(Boolean))].sort();
+  let rows=fcs.map(fc=>{
+    const d=data.filter(r=>r.warehouse_id===fc);
+    const l10=d.reduce((s,r)=>s+(r['L10 sales']||0),0);
+    const l7=d.reduce((s,r)=>s+(r['L7 sales']||0),0);
+    const d1=d.reduce((s,r)=>s+(r['D-1 sales']||0),0);
+    return{warehouse_id:fc,skus:d.length,l10,l7,d1,avgDaily:l10/10};
+  });
+  const s=salesSort[0];rows.sort((a,b)=>{const av=a[s.col]??0;const bv=b[s.col]??0;return(av<bv?-1:av>bv?1:0)*s.dir;});
+  document.getElementById('sales-fc-body').innerHTML=rows.map(r=>`<tr>
+    <td><b>${r.warehouse_id}</b></td><td>${r.skus}</td>
+    <td style="text-align:right;font-weight:700">${r.l10.toLocaleString()}</td>
+    <td style="text-align:right">${r.l7.toLocaleString()}</td>
+    <td style="text-align:right">${r.d1.toLocaleString()}</td>
+    <td style="text-align:right">${r.avgDaily.toFixed(1)}</td>
+    <td>${trendArrow(r.l7,r.l10)}</td>
+  </tr>`).join('');
+  const tl10=rows.reduce((s,r)=>s+r.l10,0),tl7=rows.reduce((s,r)=>s+r.l7,0),td1=rows.reduce((s,r)=>s+r.d1,0);
+  document.getElementById('sales-fc-foot').innerHTML=`<tr><td><b>TOTAL</b></td><td>${rows.reduce((s,r)=>s+r.skus,0)}</td><td style="text-align:right">${tl10.toLocaleString()}</td><td style="text-align:right">${tl7.toLocaleString()}</td><td style="text-align:right">${td1.toLocaleString()}</td><td style="text-align:right">${(tl10/10).toFixed(1)}</td><td></td></tr>`;
+}
+function renderSalesFCVnd(){
+  const data=getSalesData();const pairs=[...new Set(data.map(r=>r.warehouse_id+'|||'+r.vendor_full_name))].filter(p=>p.includes('|||'));
+  let rows=pairs.map(p=>{const idx=p.indexOf('|||');const fc=p.slice(0,idx);const v=p.slice(idx+3);const d=data.filter(r=>r.warehouse_id===fc&&r.vendor_full_name===v);const l10=d.reduce((s,r)=>s+(r['L10 sales']||0),0);const l7=d.reduce((s,r)=>s+(r['L7 sales']||0),0);const d1=d.reduce((s,r)=>s+(r['D-1 sales']||0),0);return{warehouse_id:fc,vendor:v,skus:d.length,l10,l7,d1,avgDaily:l10/10};});
+  const s=salesSort[1];rows.sort((a,b)=>{const av=a[s.col]??0;const bv=b[s.col]??0;return(av<bv?-1:av>bv?1:0)*s.dir;});
+  document.getElementById('sales-fcvnd-body').innerHTML=rows.map(r=>`<tr>
+    <td><b>${r.warehouse_id}</b></td><td title="${r.vendor}">${r.vendor.length>28?r.vendor.slice(0,28)+'…':r.vendor}</td><td>${r.skus}</td>
+    <td style="text-align:right;font-weight:700">${r.l10.toLocaleString()}</td>
+    <td style="text-align:right">${r.l7.toLocaleString()}</td>
+    <td style="text-align:right">${r.d1.toLocaleString()}</td>
+    <td style="text-align:right">${r.avgDaily.toFixed(1)}</td>
+    <td>${trendArrow(r.l7,r.l10)}</td>
+  </tr>`).join('');
+}
+function renderSalesFSN(){
+  const data=getSalesData();const s=salesSort[2];
+  const sorted=[...data].sort((a,b)=>{const av=parseFloat(a[s.col]||0);const bv=parseFloat(b[s.col]||0);return(av<bv?-1:av>bv?1:0)*s.dir;});
+  const start=(salesFsnPage-1)*PS;const page=sorted.slice(start,start+PS);
+  document.getElementById('sales-fsn-body').innerHTML=page.map(r=>`<tr>
+    <td><b>${r.warehouse_id||''}</b></td>
+    <td title="${r.vendor_full_name||''}">${String(r.vendor_full_name||'').slice(0,22)}</td>
+    <td style="font-family:monospace;font-size:11px">${r.FSN||''}</td>
+    <td title="${r.product_title||''}">${String(r.product_title||'').slice(0,28)}</td>
+    <td style="text-align:right;font-weight:700">${r['L10 sales']!==null?parseFloat(r['L10 sales']).toLocaleString():'-'}</td>
+    <td style="text-align:right">${r['L7 sales']!==null?parseFloat(r['L7 sales']).toLocaleString():'-'}</td>
+    <td style="text-align:right">${r['D-1 sales']!==null?parseFloat(r['D-1 sales']).toLocaleString():'-'}</td>
+    <td style="text-align:right">${r.atp!==null?parseFloat(r.atp).toLocaleString():'-'}</td>
+    <td style="text-align:right">${parseFloat(r.DRR||0).toFixed(1)}</td>
+    <td><span class="badge ${IBADGE[r.final_remarko]||''}">${r.final_remarko||''}</span></td>
+  </tr>`).join('');
+  renderPagination('sales-fsn-info','sales-fsn-pgs',sorted.length,salesFsnPage,p=>{salesFsnPage=p;renderSalesFSN();});
+}
+function sortSales(tab,col){if(salesSort[tab].col===col)salesSort[tab].dir*=-1;else{salesSort[tab].col=col;salesSort[tab].dir=-1;}renderSalesAll();}
 
 // ── PAGINATION ────────────────────────────────────────────────────────────────
 function renderPagination(infoId,btnsId,total,current,cb){
   const pages=Math.ceil(total/PS)||1;
   document.getElementById(infoId).textContent=`Showing ${((current-1)*PS+1).toLocaleString()}–${Math.min(current*PS,total).toLocaleString()} of ${total.toLocaleString()}`;
   const wrap=document.getElementById(btnsId);wrap.innerHTML='';
-  const add=(label,page,disabled=false,active=false)=>{
-    const b=document.createElement('button');b.className='pg-btn'+(active?' active':'');
-    b.textContent=label;b.disabled=disabled;b.onclick=()=>cb(page);wrap.appendChild(b);
-  };
+  const add=(label,page,disabled=false,active=false)=>{const b=document.createElement('button');b.className='pg-btn'+(active?' active':'');b.textContent=label;b.disabled=disabled;b.onclick=()=>cb(page);wrap.appendChild(b);};
   add('«',1,current===1);add('‹',current-1,current===1);
   for(let p=Math.max(1,current-2);p<=Math.min(pages,current+2);p++)add(p,p,false,p===current);
   add('›',current+1,current===pages);add('»',pages,current===pages);
